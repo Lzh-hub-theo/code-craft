@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### CUSTOM ###
+application-local.yml
+
+# 忽略代码生成目录
+/tmp/
