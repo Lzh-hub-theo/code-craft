@@ -2,6 +2,7 @@ package com.yu.ai.yuaicodemother.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.yu.ai.yuaicodemother.annotation.AuthCheck;
@@ -13,10 +14,7 @@ import com.yu.ai.yuaicodemother.constant.UserConstant;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.exception.ThrowUtils;
-import com.yu.ai.yuaicodemother.model.dto.app.AppAddRequest;
-import com.yu.ai.yuaicodemother.model.dto.app.AppAdminUpdateRequest;
-import com.yu.ai.yuaicodemother.model.dto.app.AppQueryRequest;
-import com.yu.ai.yuaicodemother.model.dto.app.AppUpdateRequest;
+import com.yu.ai.yuaicodemother.model.dto.app.*;
 import com.yu.ai.yuaicodemother.model.entity.User;
 import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
 import com.yu.ai.yuaicodemother.model.enums.UserRoleEnum;
@@ -24,20 +22,17 @@ import com.yu.ai.yuaicodemother.model.vo.AppVO;
 import com.yu.ai.yuaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.web.bind.annotation.*;
 import com.yu.ai.yuaicodemother.model.entity.App;
 import com.yu.ai.yuaicodemother.service.AppService;
-import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  控制层。
@@ -53,6 +48,60 @@ public class AppController {
 
     @Resource
     private UserService userService;
+
+    /**
+     * 应用聊天生成代码（流式）
+     * MediaType.TEXT_EVENT_STREAM_VALUE 相当于响应头的 Content-Type: text/event-stream
+     * 1，解决SSE空格丢失问题：将原本的返回值封装到JSON中
+     * 2，区分是正常结束还是异常中断，主动告诉前端是否生成完成
+     *
+     * @param appId 应用id
+     * @param message 提示词
+     * @param request 请求
+     * @return 生成结果流
+     */
+    @GetMapping(value="/chat/gen/code", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<String>> chatToGenCode(@RequestParam Long appId,
+                                                       @RequestParam String message,
+                                                       HttpServletRequest request){
+        //参数校验
+        ThrowUtils.throwIf(appId==null||appId<=0,ErrorCode.PARAMS_ERROR,"应用ID无效");
+        ThrowUtils.throwIf(StrUtil.isBlank(message),ErrorCode.PARAMS_ERROR,"提示词不能为空");
+        //获取当前用户
+        User loginUser = userService.getLoginUser(request);
+        //调用服务生成代码（流式）
+        Flux<String> contentFlux = appService.chatToGenCode(appId, message, loginUser);
+        //转换为ServerSentEvent格式
+        return contentFlux
+                .map(chunk -> {
+                    //将内容包装成json对象
+                    Map<String, String> wrapper = Map.of("d", chunk);
+                    String jsonData = JSONUtil.toJsonStr(wrapper);
+                    return ServerSentEvent.<String>builder()
+                            .data(jsonData)
+                            .build();
+                })
+                .concatWith(Mono.just(
+                        //发送结束事件
+                        ServerSentEvent.<String>builder()
+                                .event("done")
+                                .data("")
+                                .build()
+                ));
+    }
+
+    @PostMapping("deploy")
+    public BaseResponse<String> deployApp(@RequestBody AppDeployRequest appDeployRequest,HttpServletRequest request){
+        //参数校验
+        ThrowUtils.throwIf(appDeployRequest==null,ErrorCode.PARAMS_ERROR);
+        Long appId = appDeployRequest.getAppId();
+        ThrowUtils.throwIf(appId==null||appId<=0,ErrorCode.PARAMS_ERROR,"应用ID不能为空");
+        //获取用户
+        User loginUser = userService.getLoginUser(request);
+        //调用服务部署应用
+        String deployUrl = appService.deployApp(appId, loginUser);
+        return ResultUtils.success(deployUrl);
+    }
 
     /**
      * 创建应用
