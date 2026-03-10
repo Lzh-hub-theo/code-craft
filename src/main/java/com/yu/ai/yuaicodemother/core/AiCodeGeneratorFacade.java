@@ -1,6 +1,7 @@
 package com.yu.ai.yuaicodemother.core;
 
 import com.yu.ai.yuaicodemother.ai.AiCodeGeneratorService;
+import com.yu.ai.yuaicodemother.ai.AiCodeGeneratorServiceFactory;
 import com.yu.ai.yuaicodemother.ai.model.HtmlCodeResult;
 import com.yu.ai.yuaicodemother.ai.model.MultiFileCodeResult;
 import com.yu.ai.yuaicodemother.core.parser.CodeParserExecutor;
@@ -23,7 +24,7 @@ import java.io.File;
 public class AiCodeGeneratorFacade {
 
     @Resource
-    private AiCodeGeneratorService aiCodeGeneratorService;
+    private AiCodeGeneratorServiceFactory aiCodeGeneratorServiceFactory;
 
     /**
      * 统一入口：根据类型生成并保存代码
@@ -39,11 +40,14 @@ public class AiCodeGeneratorFacade {
 
         return switch (codeGenTypeEnum) {
             case HTML -> {
+                //根据appId获取相应的AI服务实例
+                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 HtmlCodeResult result = aiCodeGeneratorService.generateHtmlCode(userMessage);
                 yield CodeFileSaverExecutor.executeSaver(result, CodeGenTypeEnum.HTML, appId);
 //                yield CodeFileSaver.saveHtmlCodeResult(result);
             }
             case MULTI_FILE -> {
+                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 MultiFileCodeResult result = aiCodeGeneratorService.generateMultiFileCode(userMessage);
                 yield CodeFileSaverExecutor.executeSaver(result, CodeGenTypeEnum.MULTI_FILE, appId);
 //                yield CodeFileSaver.saveMultiFileCodeResult(result);
@@ -69,10 +73,12 @@ public class AiCodeGeneratorFacade {
 
         return switch (codeGenTypeEnum) {
             case HTML -> {
+                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 Flux<String> codeStream = aiCodeGeneratorService.generateHtmlCodeStream(userMessage);
                 yield processCodeStream(codeStream, CodeGenTypeEnum.HTML, appId);
             }
             case MULTI_FILE -> {
+                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 Flux<String> codeStream = aiCodeGeneratorService.generateMultiFileCodeStream(userMessage);
                 yield processCodeStream(codeStream, CodeGenTypeEnum.MULTI_FILE, appId);
             }
