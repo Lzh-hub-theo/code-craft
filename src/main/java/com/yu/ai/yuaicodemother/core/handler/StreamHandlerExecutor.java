@@ -1,0 +1,32 @@
+package com.yu.ai.yuaicodemother.core.handler;
+
+import com.yu.ai.yuaicodemother.model.entity.User;
+import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
+import com.yu.ai.yuaicodemother.service.ChatHistoryService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+
+/**
+ * 流处理器执行器
+ * 根据代码生成类型创建合适的流处理器：
+ * 传统的Flux<String>流（HTML,MULTI_FILE）-> SimpleTextStreamHandler
+ * TokenStream格式的复杂流（VUE_PROJECT）-> JsonMessageStreamHandler
+ */
+@Slf4j
+@Component
+public class StreamHandlerExecutor {
+    private static final SimpleTextStreamHandler simpleTextStreamHandler = new SimpleTextStreamHandler();
+    private static final JsonMessageStreamHandler jsonMessageStreamHandler = new JsonMessageStreamHandler();
+
+    public Flux<String> doExecute(Flux<String> originFlux,
+                                  ChatHistoryService chatHistoryService,
+                                  Long appId, User loginUser, CodeGenTypeEnum codeGenType) {
+        return switch(codeGenType){
+            case VUE_PROJECT ->
+                jsonMessageStreamHandler.handle(originFlux,chatHistoryService,appId,loginUser);
+            case HTML,MULTI_FILE ->
+                simpleTextStreamHandler.handle(originFlux,chatHistoryService,appId,loginUser);
+        };
+    }
+}

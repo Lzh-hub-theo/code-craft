@@ -1,14 +1,21 @@
 package com.yu.ai.yuaicodemother.core;
 
+import cn.hutool.json.JSONUtil;
 import com.yu.ai.yuaicodemother.ai.AiCodeGeneratorService;
 import com.yu.ai.yuaicodemother.ai.AiCodeGeneratorServiceFactory;
 import com.yu.ai.yuaicodemother.ai.model.HtmlCodeResult;
 import com.yu.ai.yuaicodemother.ai.model.MultiFileCodeResult;
+import com.yu.ai.yuaicodemother.ai.model.message.AiResponseMessage;
+import com.yu.ai.yuaicodemother.ai.model.message.ToolExecutedMessage;
+import com.yu.ai.yuaicodemother.ai.model.message.ToolRequestMessage;
 import com.yu.ai.yuaicodemother.core.parser.CodeParserExecutor;
 import com.yu.ai.yuaicodemother.core.saver.CodeFileSaverExecutor;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.tool.ToolExecution;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -62,7 +69,7 @@ public class AiCodeGeneratorFacade {
     /**
      * 统一入口：根据类型生成并保存代码（流式）
      *
-     * @param userMessage 用户提示词
+     * @param userMessage     用户提示词
      * @param codeGenTypeEnum 生成类型
      * @return
      */
@@ -71,16 +78,20 @@ public class AiCodeGeneratorFacade {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "生成类型为空");
         }
 
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId, codeGenTypeEnum);
+
         return switch (codeGenTypeEnum) {
             case HTML -> {
-                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 Flux<String> codeStream = aiCodeGeneratorService.generateHtmlCodeStream(userMessage);
                 yield processCodeStream(codeStream, CodeGenTypeEnum.HTML, appId);
             }
             case MULTI_FILE -> {
-                AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId);
                 Flux<String> codeStream = aiCodeGeneratorService.generateMultiFileCodeStream(userMessage);
                 yield processCodeStream(codeStream, CodeGenTypeEnum.MULTI_FILE, appId);
+            }
+            case VUE_PROJECT -> {
+                TokenStream tokenStream = aiCodeGeneratorService.generateVueProjectCodeStream(appId, userMessage);
+                yield processTokenStream(tokenStream);
             }
             default -> {
                 String errorMessage = "不支持生成类型：" + codeGenTypeEnum.getValue();
@@ -116,6 +127,38 @@ public class AiCodeGeneratorFacade {
                         log.error("保存失败：{}", e.getMessage());
                     }
                 });
+    }
+
+    /**
+     * 将TokenStream转换为Flux<String>, 并传递工具调用信息
+     *
+     * @param tokenStream TokenStream对象
+     * @return Flux<String>流式响应
+     */
+    private Flux<String> processTokenStream(TokenStream tokenStream) {
+        return Flux.create(sink -> {
+            tokenStream.onPartialResponse((String partialResponse) -> {
+                        AiResponseMessage aiResponseMessage = new AiResponseMessage(partialResponse);
+                        sink.next(JSONUtil.toJsonStr(aiResponseMessage));
+                    })
+                    .onPartialToolExecutionRequest((index, toolExecutionRequest) -> {
+                        ToolRequestMessage toolRequestMessage = new ToolRequestMessage(toolExecutionRequest);
+                        sink.next(JSONUtil.toJsonStr(toolRequestMessage));
+                    })
+                    .onToolExecuted((ToolExecution toolExecution) -> {
+                        ToolExecutedMessage toolExecutedMessage = new ToolExecutedMessage(toolExecution);
+                        sink.next(JSONUtil.toJsonStr(toolExecutedMessage));
+                    })
+                    .onCompleteResponse((ChatResponse chatResponse) -> {
+                        sink.complete();
+                    })
+                    .onError((Throwable error) -> {
+                        error.printStackTrace();
+                        sink.error(error);
+                    })
+                    .start();
+        });
+
     }
 
 //    ==========以下为旧代码，已弃用=============
