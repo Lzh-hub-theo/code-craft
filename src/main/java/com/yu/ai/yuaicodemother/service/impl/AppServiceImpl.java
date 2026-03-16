@@ -7,12 +7,14 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.yu.ai.yuaicodemother.ai.AiCodeGenTypeRoutingService;
 import com.yu.ai.yuaicodemother.core.AiCodeGeneratorFacade;
 import com.yu.ai.yuaicodemother.core.builder.VueProjectBuilder;
 import com.yu.ai.yuaicodemother.core.handler.StreamHandlerExecutor;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.exception.ThrowUtils;
+import com.yu.ai.yuaicodemother.model.dto.app.AppAddRequest;
 import com.yu.ai.yuaicodemother.model.dto.app.AppQueryRequest;
 import com.yu.ai.yuaicodemother.model.entity.App;
 import com.yu.ai.yuaicodemother.mapper.AppMapper;
@@ -23,6 +25,7 @@ import com.yu.ai.yuaicodemother.model.vo.AppVO;
 import com.yu.ai.yuaicodemother.model.vo.UserVO;
 import com.yu.ai.yuaicodemother.service.AppService;
 import com.yu.ai.yuaicodemother.service.ChatHistoryService;
+import com.yu.ai.yuaicodemother.service.ScreenshotService;
 import com.yu.ai.yuaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +67,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
     @Resource
     private VueProjectBuilder vueProjectBuilder;
 
+    @Resource
+    private ScreenshotService screenshotService;
+
+    @Resource
+    private AiCodeGenTypeRoutingService aiCodeGenTypeRoutingService;
+
     @Override
     public Flux<String> chatToGenCode(Long appId, String message, User loginUser) {
         //1，参数校验
@@ -88,6 +97,27 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         return streamHandlerExecutor.doExecute(codeStream, chatHistoryService, appId, loginUser, codeGenTypeEnum);
     }
 
+    @Override
+    public Long createApp(AppAddRequest appAddRequest, User loginUser){
+        // 参数校验
+        String initPrompt = appAddRequest.getInitPrompt();
+        ThrowUtils.throwIf(StrUtil.isBlank(initPrompt), ErrorCode.PARAMS_ERROR, "初始化prompt不能为空");
+        // 构造入库对象
+        App app = new App();
+        BeanUtil.copyProperties(appAddRequest, app);
+        app.setUserId(loginUser.getId());
+        // 应用名称暂时为initPrompt前12为位
+        app.setAppName(initPrompt.substring(0, Math.min(initPrompt.length(), 12)));
+        // 使用ai智能生成代码类型
+        CodeGenTypeEnum selectedCodeGenType = aiCodeGenTypeRoutingService.routeCodeGenType(initPrompt);
+        app.setCodeGenType(selectedCodeGenType.getValue());
+        // 插入数据库
+        boolean result = this.save(app);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        log.info("创建应用成功，ID：{}，类型：{}", app.getId(),selectedCodeGenType.getValue());
+        return app.getId();
+    }
+
     /**
      * 删除应用时关联删除对话历史
      *
@@ -95,13 +125,13 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
      * @return 删除结果
      */
     @Override
-    public boolean removeById(Serializable id){
-        if(id == null) {
+    public boolean removeById(Serializable id) {
+        if (id == null) {
             return false;
         }
         //转换为 long 类型
         Long appId = Long.valueOf(id.toString());
-        if(appId<=0){
+        if (appId <= 0) {
             return false;
         }
         //先删除关联的对话历史
@@ -109,7 +139,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             chatHistoryService.deleteByAppId(appId);
         } catch (Exception e) {
             //记录日志但不影响应用删除
-            log.error("删除应用关联历史对话失败：{}",e.getMessage());
+            log.error("删除应用关联历史对话失败：{}", e.getMessage());
         }
         //删除应用
         return super.removeById(id);
@@ -207,7 +237,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "应用代码不存在，请先生成代码");
         }
         // 7，Vue 项目特殊处理：执行构建
-        if(CodeGenTypeEnum.VUE_PROJECT.getValue().equals(codeGenType)){
+        if (CodeGenTypeEnum.VUE_PROJECT.getValue().equals(codeGenType)) {
             //vue项目构建
             boolean buildSuccess = vueProjectBuilder.buildProject(sourceDirPath);
             ThrowUtils.throwIf(!buildSuccess, ErrorCode.SYSTEM_ERROR, "Vue项目构建失败，请检查代码和依赖");
@@ -216,20 +246,44 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             ThrowUtils.throwIf(!FileUtil.exist(distDir) || !FileUtil.isDirectory(distDir), ErrorCode.SYSTEM_ERROR, "Vue项目构建完成但未生成dist目录");
             //将dist目录作为部署源
             sourceDir = distDir;
-            log.info("vue 项目构建成功，将部署dist目录：{}",distDir.getAbsolutePath());
+            log.info("vue 项目构建成功，将部署dist目录：{}", distDir.getAbsolutePath());
         }
-        // 7，复制文件到部署目录
+        // 8，复制文件到部署目录
         String deployDirPath = CODE_DEPLOY_ROOT_DIR + File.separator + deployKey;
         File deployDir = new File(deployDirPath);
         FileUtil.copyContent(sourceDir, deployDir, true);
-        // 8，更新app的deployKey和部署时间
+        // 9，更新app的deployKey和部署时间
         App updateApp = new App();
         updateApp.setDeployKey(deployKey);
         updateApp.setDeployedTime(LocalDateTime.now());
         updateApp.setId(appId);
         boolean updateResult = this.updateById(updateApp);
         ThrowUtils.throwIf(!updateResult, ErrorCode.OPERATION_ERROR, "更新应用部署信息失败");
-        // 9，放回可访问的 URL
-        return String.format("%s/%s/", CODE_DEPLOY_HOST, deployKey);
+        // 10，构建应用访问 URL
+        String appDeployUrl = String.format("%s/%s/", CODE_DEPLOY_HOST, deployKey);
+        // 11，异步生成截图并更新应用封面
+        generateAppScreenShotAsync(appId, appDeployUrl);
+        return appDeployUrl;
+    }
+
+    /**
+     * 异步生成截图并更新应用封面
+     *
+     * @param appId  应用ID
+     * @param appUrl 应用访问URL
+     */
+    @Override
+    public void generateAppScreenShotAsync(Long appId, String appUrl) {
+        //使用虚拟线程异步执行
+        Thread.startVirtualThread(() -> {
+            // 调用截图生成服务并上传
+            String ScreenshotUrl = screenshotService.generateAndUploadScreenshot(appUrl);
+            // 更新应用封面字段
+            App updateApp = new App();
+            updateApp.setId(appId);
+            updateApp.setCover(ScreenshotUrl);
+            boolean updated = this.updateById(updateApp);
+            ThrowUtils.throwIf(!updated, ErrorCode.OPERATION_ERROR, "更新应用封面字段失败");
+        });
     }
 }
