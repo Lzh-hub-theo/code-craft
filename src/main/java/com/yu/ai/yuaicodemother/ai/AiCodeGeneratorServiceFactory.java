@@ -2,7 +2,7 @@ package com.yu.ai.yuaicodemother.ai;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.yu.ai.yuaicodemother.ai.tools.FileWriteTool;
+import com.yu.ai.yuaicodemother.ai.tools.ToolManager;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
@@ -45,6 +45,9 @@ public class AiCodeGeneratorServiceFactory {
     @Resource
     private ChatHistoryService chatHistoryService;
 
+    @Resource
+    private ToolManager toolManager;
+
     /**
      * AI服务实例缓存
      * 缓存策略：
@@ -73,10 +76,10 @@ public class AiCodeGeneratorServiceFactory {
      */
     public AiCodeGeneratorService getAiCodeGeneratorService(Long appId, CodeGenTypeEnum codeGenType) {
         String cacheKey = buildCacheKey(appId, codeGenType);
-        return serviceCache.get(cacheKey, key -> createAiCodeGeneratorService(appId,codeGenType));
+        return serviceCache.get(cacheKey, key -> createAiCodeGeneratorService(appId, codeGenType));
     }
 
-    public String buildCacheKey(Long appId, CodeGenTypeEnum codeGenType){
+    public String buildCacheKey(Long appId, CodeGenTypeEnum codeGenType) {
         return appId + "_" + codeGenType.getValue();
     }
 
@@ -97,7 +100,7 @@ public class AiCodeGeneratorServiceFactory {
             case VUE_PROJECT -> AiServices.builder(AiCodeGeneratorService.class)
                     .streamingChatModel(reasoningStreamingChatModel)
                     .chatMemoryProvider(memoryId -> chatMemory)
-                    .tools(new FileWriteTool())
+                    .tools(toolManager.getAllTools())
                     .hallucinatedToolNameStrategy(toolExecutionRequest -> ToolExecutionResultMessage.from(
                             toolExecutionRequest, "Error: there is no tool called " + toolExecutionRequest.name()
                     ))
