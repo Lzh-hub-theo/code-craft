@@ -1,5 +1,6 @@
 package com.yu.ai.yuaicodemother.langgraph4j.state;
 
+import com.yu.ai.yuaicodemother.langgraph4j.model.ImageCollectionPlan;
 import com.yu.ai.yuaicodemother.langgraph4j.model.ImageResource;
 import com.yu.ai.yuaicodemother.langgraph4j.model.QualityResult;
 import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
@@ -77,6 +78,19 @@ public class WorkflowContext implements Serializable {
      * 代码质量检测结果
      */
     private QualityResult qualityResult;
+
+    /**
+     * 图片收集计划
+     */
+    private ImageCollectionPlan imageCollectionPlan;
+
+    /**
+     * 并发图片收集的中间结果字段
+     */
+    private List<ImageResource> contentImages;
+    private List<ImageResource> illustrations;
+    private List<ImageResource> Diagrams;
+    private List<ImageResource> Logos;
 
     @Serial
     private static final long serialVersionUID = 1L;
