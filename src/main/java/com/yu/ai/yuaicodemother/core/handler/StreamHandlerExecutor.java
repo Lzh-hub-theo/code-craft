@@ -3,6 +3,7 @@ package com.yu.ai.yuaicodemother.core.handler;
 import com.yu.ai.yuaicodemother.model.entity.User;
 import com.yu.ai.yuaicodemother.model.enums.CodeGenTypeEnum;
 import com.yu.ai.yuaicodemother.service.ChatHistoryService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -17,7 +18,9 @@ import reactor.core.publisher.Flux;
 @Component
 public class StreamHandlerExecutor {
     private static final SimpleTextStreamHandler simpleTextStreamHandler = new SimpleTextStreamHandler();
-    private static final JsonMessageStreamHandler jsonMessageStreamHandler = new JsonMessageStreamHandler();
+
+    @Resource
+    private JsonMessageStreamHandler jsonMessageStreamHandler;
 
     public Flux<String> doExecute(Flux<String> originFlux,
                                   ChatHistoryService chatHistoryService,

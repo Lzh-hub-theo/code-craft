@@ -13,6 +13,7 @@ import com.yu.ai.yuaicodemother.model.enums.ChatHistoryMessageTypeEnum;
 import com.yu.ai.yuaicodemother.service.ChatHistoryService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import java.util.HashSet;
  * 处理 VUE_PROJECT 类型的复杂流式响应，包含工具调用信息
  */
 @Slf4j
+@Component
 public class JsonMessageStreamHandler {
 
     @Resource

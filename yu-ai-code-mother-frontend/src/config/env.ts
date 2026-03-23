@@ -22,7 +22,7 @@ export const getStaticPreviewUrl = (codeGenType: string, appId: string) => {
   const baseUrl = `${STATIC_BASE_URL}/${codeGenType}_${appId}/`
   //如果是Vue项目，浏览地址需要添加dist后缀
   if(codeGenType === CodeGenTypeEnum.VUE_PROJECT){
-    return `{baseUrl}dist/index.html`
+    return `${baseUrl}dist/index.html`
   }
   return baseUrl
 }
