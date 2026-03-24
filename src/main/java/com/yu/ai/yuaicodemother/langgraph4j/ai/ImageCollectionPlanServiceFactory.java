@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ImageCollectionPlanServiceFactory {
 
-    @Resource
+    @Resource(name = "openAiChatModel")
     private ChatModel chatModel;
 
     @Bean
-    public ImageCollectionPlanService imageCollectionPlanService(){
+    public ImageCollectionPlanService imageCollectionPlanService() {
         return AiServices.builder(ImageCollectionPlanService.class)
                 .chatModel(chatModel)
                 .build();

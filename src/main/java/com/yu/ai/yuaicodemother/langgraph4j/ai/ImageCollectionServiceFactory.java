@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ImageCollectionServiceFactory {
 
-    @Resource
+    @Resource(name = "openAiChatModel")
     private ChatModel chatModel;
 
     @Resource
@@ -34,7 +34,7 @@ public class ImageCollectionServiceFactory {
      * 创建图片收集ai服务
      */
     @Bean
-    public ImageCollectionService imageCollectionService(){
+    public ImageCollectionService imageCollectionService() {
         return AiServices.builder(ImageCollectionService.class)
                 .chatModel(chatModel)
                 .tools(
