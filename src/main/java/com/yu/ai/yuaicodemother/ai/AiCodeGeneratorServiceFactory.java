@@ -2,6 +2,7 @@ package com.yu.ai.yuaicodemother.ai;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.yu.ai.yuaicodemother.ai.guardrail.PromptSavetyInputGuardrail;
 import com.yu.ai.yuaicodemother.ai.tools.ToolManager;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
@@ -10,6 +11,7 @@ import com.yu.ai.yuaicodemother.service.ChatHistoryService;
 import com.yu.ai.yuaicodemother.utils.SpringContextUtil;
 import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.data.message.ToolExecutionResultMessage;
+import dev.langchain4j.guardrail.config.OutputGuardrailsConfig;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.StreamingChatModel;
@@ -89,6 +91,10 @@ public class AiCodeGeneratorServiceFactory {
                 .build();
         //从数据库中加载历史对话到记忆中
         chatHistoryService.loadChatHistoryToMemory(appId, chatMemory, 20);
+        //通过护轨配置类设置最大重试次数
+        OutputGuardrailsConfig outputGuardrailsConfig = OutputGuardrailsConfig.builder()
+                .maxRetries(3)
+                .build();
         //根据代码生成类型选择不同的模型配置
         return switch (codeGenType) {
             case VUE_PROJECT -> {
