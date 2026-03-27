@@ -1,0 +1,23 @@
+package com.yu.ai.yuaicodemother.inerservice;
+
+import com.yu.ai.yuaicodemother.exception.BusinessException;
+import com.yu.ai.yuaicodemother.exception.ErrorCode;
+import com.yu.ai.yuaicodemother.model.entity.User;
+import com.yu.ai.yuaicodemother.model.vo.UserVO;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+import static com.yu.ai.yuaicodemother.constant.UserConstant.USER_LOGIN_STATE;
+
+public interface InnerUserService {
+    UserVO getUserVO(User user);
+
+    List<User> listByIds(Collection<? extends Serializable> id);
+
+    User getById(Serializable id);
+
+    User getLoginUser(HttpServletRequest request);
+}
