@@ -24,7 +24,7 @@ spring:
     timeout: 2592000
 
 server:
-  port: 8123
+  port: 8125
   servlet:
     context-path: /api
     # cookie expire in 30 days
