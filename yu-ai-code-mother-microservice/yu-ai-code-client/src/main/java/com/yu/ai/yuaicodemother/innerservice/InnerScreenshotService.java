@@ -1,4 +1,4 @@
-package com.yu.ai.yuaicodemother.inerservice;
+package com.yu.ai.yuaicodemother.innerservice;
 
 public interface InnerScreenshotService {
 

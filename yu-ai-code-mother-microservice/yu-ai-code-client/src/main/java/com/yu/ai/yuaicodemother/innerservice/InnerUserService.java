@@ -1,4 +1,4 @@
-package com.yu.ai.yuaicodemother.inerservice;
+package com.yu.ai.yuaicodemother.innerservice;
 
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;

@@ -8,7 +8,7 @@ import com.yu.ai.yuaicodemother.common.ResultUtils;
 import com.yu.ai.yuaicodemother.constant.UserConstant;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.exception.ThrowUtils;
-import com.yu.ai.yuaicodemother.inerservice.InnerUserService;
+import com.yu.ai.yuaicodemother.innerservice.InnerUserService;
 import com.yu.ai.yuaicodemother.model.dto.chathistory.ChatHistoryQueryRequest;
 import com.yu.ai.yuaicodemother.model.entity.ChatHistory;
 import com.yu.ai.yuaicodemother.model.entity.User;

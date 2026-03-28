@@ -15,8 +15,8 @@ import com.yu.ai.yuaicodemother.core.handler.StreamHandlerExecutor;
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
 import com.yu.ai.yuaicodemother.exception.ThrowUtils;
-import com.yu.ai.yuaicodemother.inerservice.InnerScreenshotService;
-import com.yu.ai.yuaicodemother.inerservice.InnerUserService;
+import com.yu.ai.yuaicodemother.innerservice.InnerScreenshotService;
+import com.yu.ai.yuaicodemother.innerservice.InnerUserService;
 import com.yu.ai.yuaicodemother.mapper.AppMapper;
 import com.yu.ai.yuaicodemother.model.dto.app.AppAddRequest;
 import com.yu.ai.yuaicodemother.model.dto.app.AppQueryRequest;
@@ -30,7 +30,7 @@ import com.yu.ai.yuaicodemother.service.AppService;
 import com.yu.ai.yuaicodemother.service.ChatHistoryService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -54,8 +54,7 @@ import static com.yu.ai.yuaicodemother.constant.AppConstant.*;
 @Service
 public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppService {
 
-    @Resource
-    @Lazy
+    @DubboReference
     private InnerUserService userService;
 
     @Resource
@@ -70,8 +69,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
     @Resource
     private VueProjectBuilder vueProjectBuilder;
 
-    @Resource
-    @Lazy
+    @DubboReference
     private InnerScreenshotService screenshotService;
 
     @Resource

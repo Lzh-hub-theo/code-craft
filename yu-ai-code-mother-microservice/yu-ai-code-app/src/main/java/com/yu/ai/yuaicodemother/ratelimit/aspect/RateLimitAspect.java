@@ -2,13 +2,12 @@ package com.yu.ai.yuaicodemother.ratelimit.aspect;
 
 import com.yu.ai.yuaicodemother.exception.BusinessException;
 import com.yu.ai.yuaicodemother.exception.ErrorCode;
-import com.yu.ai.yuaicodemother.inerservice.InnerUserService;
+import com.yu.ai.yuaicodemother.innerservice.InnerUserService;
 import com.yu.ai.yuaicodemother.model.entity.User;
 import com.yu.ai.yuaicodemother.ratelimit.annotation.RateLimit;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.runtime.Inner;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -30,8 +29,6 @@ import java.time.Duration;
 public class RateLimitAspect {
     @Resource
     private RedissonClient redissonClient;
-    @Resource
-    private InnerUserService userService;
 
     @Before("@annotation(rateLimit)")
     public void doBefore(JoinPoint point, RateLimit rateLimit) {
