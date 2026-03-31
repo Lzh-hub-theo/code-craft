@@ -34,6 +34,7 @@ build/
 
 ### CUSTOM ###
 application-local.yml
+application-prod.yml
 
 # 忽略代码生成目录
 /tmp/

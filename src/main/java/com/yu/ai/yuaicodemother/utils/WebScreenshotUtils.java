@@ -26,6 +26,9 @@ public class WebScreenshotUtils {
 
     private static final WebDriver webDriver;
 
+    private static final String deployHost = "your deploy host ip";
+    private static final String innerDeployHost = "your deploy host ip in the local internet";
+
     static {
         final int DEFAULT_WIDTH = 1600;
         final int DEFAULT_HEIGHT = 900;
@@ -103,6 +106,8 @@ public class WebScreenshotUtils {
             options.addArguments("--disable-extensions");
             // 设置用户代理
             options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+            // 把 deployHost 强制解析成 innerDeployHost,访问的还是 http://deployHost/,浏览器会自动带 Host: deployHost
+            options.addArguments(String.format("--host-resolver-rules=MAP %s %s",deployHost,innerDeployHost));
             // 创建驱动
             WebDriver driver = new ChromeDriver(options);
             // 设置页面加载超时

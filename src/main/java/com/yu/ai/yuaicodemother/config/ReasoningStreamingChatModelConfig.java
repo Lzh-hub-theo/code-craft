@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import java.time.Duration;
 import java.util.List;
 
 @Configuration
@@ -23,6 +24,7 @@ public class ReasoningStreamingChatModelConfig {
     private Double temperature;
     private Boolean logRequests = false;
     private Boolean logResponses = false;
+    private Duration timeout;
 
     @Resource
     private AiModelMonitorListener aiModelMonitorListener;
@@ -44,6 +46,7 @@ public class ReasoningStreamingChatModelConfig {
                 .temperature(temperature)
                 .logRequests(true)
                 .logResponses(true)
+                .timeout(timeout)
                 .listeners(List.of(aiModelMonitorListener))
                 .build();
     }

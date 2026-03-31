@@ -11,7 +11,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "pure-build": "vite build"
   },
   "dependencies": {
     "@types/markdown-it": "^14.1.2",

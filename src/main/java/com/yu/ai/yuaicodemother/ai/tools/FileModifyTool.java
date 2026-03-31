@@ -22,7 +22,7 @@ import java.nio.file.StandardOpenOption;
 @Component
 public class FileModifyTool extends BaseTool {
 
-    @Tool("修改文件内容，用新内容替换旧内容")
+    @Tool("修改文件内容之后自动写入文件，用新内容替换旧内容")
     public String modifyFile(
             @P("文件的相对路径")
             String relativeFilePath,
@@ -36,7 +36,7 @@ public class FileModifyTool extends BaseTool {
             if (!path.isAbsolute()) {
                 String projectDirName = "vue_project_" + appId;
                 Path projectRoot = Paths.get(AppConstant.CODE_OUTPUT_ROOT_DIR, projectDirName);
-                path = projectRoot.relativize(path);
+                path = projectRoot.resolve(relativeFilePath);
             }
             if (!Files.exists(path) || !Files.isRegularFile(path)) {
                 return "错误：文件不存在或不是文件 - " + relativeFilePath;

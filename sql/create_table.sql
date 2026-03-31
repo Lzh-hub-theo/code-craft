@@ -65,3 +65,6 @@ create table chat_history
     INDEX idx_createTime (createTime),             -- 提升基于创建时间的查询性能
     INDEX idx_appId_createTime (appId, createTime) -- 游标查询核心索引，复合索引
 ) comment '对话历史' collate = utf8mb4_unicode_ci;
+
+-- 修改对话历史表的message字段为的存储大小，避免生成复杂的vue工程时数据库写入异常
+alter table chat_history modify message mediumtext not null comment '消息';
