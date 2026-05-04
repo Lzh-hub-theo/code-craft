@@ -9,13 +9,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>yu-ai-code-common</module>
-        <module>yu-ai-code-model</module>
-        <module>yu-ai-code-client</module>
-        <module>yu-ai-code-user</module>
-        <module>yu-ai-code-app</module>
-        <module>yu-ai-code-ai</module>
-        <module>yu-ai-code-screenshot</module>
+        <module>craft-code-common</module>
+        <module>craft-code-model</module>
+        <module>craft-code-client</module>
+        <module>craft-code-user</module>
+        <module>craft-code-app</module>
+        <module>craft-code-ai</module>
+        <module>craft-code-screenshot</module>
     </modules>
 
     <properties>
