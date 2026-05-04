@@ -1,5 +1,6 @@
 package com.craft.ai.codecraft;
 
+import com.craft.ai.codecraft.langgraph4j.ai.ImageCollectionService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

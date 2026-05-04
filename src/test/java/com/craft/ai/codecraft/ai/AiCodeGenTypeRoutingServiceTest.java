@@ -1,6 +1,6 @@
 package com.craft.ai.codecraft.ai;
 
-import com.yu.ai.codecraft.model.enums.CodeGenTypeEnum;
+import com.craft.ai.codecraft.model.enums.CodeGenTypeEnum;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

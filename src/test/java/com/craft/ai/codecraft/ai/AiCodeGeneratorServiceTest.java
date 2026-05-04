@@ -1,7 +1,7 @@
 package com.craft.ai.codecraft.ai;
 
-import com.yu.ai.codecraft.ai.model.HtmlCodeResult;
-import com.yu.ai.codecraft.ai.model.MultiFileCodeResult;
+import com.craft.ai.codecraft.ai.model.HtmlCodeResult;
+import com.craft.ai.codecraft.ai.model.MultiFileCodeResult;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

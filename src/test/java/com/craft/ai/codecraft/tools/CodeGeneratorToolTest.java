@@ -1,13 +1,15 @@
 package com.craft.ai.codecraft.tools;
 
-import com.yu.ai.codecraft.langgraph4j.model.ImageResource;
-import com.yu.ai.codecraft.langgraph4j.model.enums.ImageCategoryEnum;
+import com.craft.ai.codecraft.langgraph4j.model.ImageResource;
+import com.craft.ai.codecraft.langgraph4j.model.enums.ImageCategoryEnum;
+import com.craft.ai.codecraft.langgraph4j.tools.LogoGeneratorTool;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest

@@ -1,7 +1,7 @@
 package com.craft.ai.codecraft.core;
 
-import com.yu.ai.codecraft.ai.model.HtmlCodeResult;
-import com.yu.ai.codecraft.ai.model.MultiFileCodeResult;
+import com.craft.ai.codecraft.ai.model.HtmlCodeResult;
+import com.craft.ai.codecraft.ai.model.MultiFileCodeResult;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
