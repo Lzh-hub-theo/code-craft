@@ -1,7 +1,7 @@
 <template>
   <div id="userLoginPage">
-    <h2 class="title">鱼皮 AI 应用生成 - 用户登录</h2>
-    <div class="desc">不写一行代码，生成完整应用</div>
+    <h2 class="title">Code Craft Platform - 用户登录</h2>
+    <div class="desc">语落成章，网站即现</div>
     <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
       <a-form-item name="userAccount" :rules="[{ required: true, message: '请输入账号' }]">
         <a-input v-model:value="formState.userAccount" placeholder="请输入账号" />
@@ -63,26 +63,29 @@ const handleSubmit = async (values: any) => {
 
 <style scoped>
 #userLoginPage {
-  background: white;
+  background: #1a1a2e;
   max-width: 720px;
   padding: 24px;
   margin: 24px auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .title {
   text-align: center;
   margin-bottom: 16px;
+  color: #e0e0e0;
 }
 
 .desc {
   text-align: center;
-  color: #bbb;
+  color: #6a6a8a;
   margin-bottom: 16px;
 }
 
 .tips {
   margin-bottom: 16px;
-  color: #bbb;
+  color: #6a6a8a;
   font-size: 13px;
   text-align: right;
 }

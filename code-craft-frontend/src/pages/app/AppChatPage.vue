@@ -775,7 +775,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: #fdfdfd;
+  background: #1a1a2e;
 }
 
 /* 顶部栏 */
@@ -784,6 +784,9 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
+  background: #16213e;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
 .header-left {
@@ -800,7 +803,7 @@ onUnmounted(() => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #e0e0e0;
 }
 
 .header-right {
@@ -822,9 +825,9 @@ onUnmounted(() => {
   flex: 2;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #16213e;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
@@ -867,8 +870,8 @@ onUnmounted(() => {
 }
 
 .ai-message .message-content {
-  background: #f5f5f5;
-  color: #1a1a1a;
+  background: #2a2a4a;
+  color: #e0e0e0;
   padding: 8px 12px;
 }
 
@@ -880,7 +883,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #666;
+  color: #a0a0a0;
 }
 
 /* 加载更多按钮 */
@@ -893,7 +896,7 @@ onUnmounted(() => {
 /* 输入区域 */
 .input-container {
   padding: 16px;
-  background: white;
+  background: #1a1a2e;
 }
 
 .input-wrapper {
@@ -902,6 +905,9 @@ onUnmounted(() => {
 
 .input-wrapper .ant-input {
   padding-right: 50px;
+  background: #2a2a4a;
+  color: #e0e0e0;
+  border-color: #3a3a5a;
 }
 
 .input-actions {
@@ -915,9 +921,9 @@ onUnmounted(() => {
   flex: 3;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #16213e;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
@@ -926,13 +932,14 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #2a2a4a;
 }
 
 .preview-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
+  color: #e0e0e0;
 }
 
 .preview-actions {
@@ -952,7 +959,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #a0a0a0;
 }
 
 .placeholder-icon {
@@ -966,7 +973,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #a0a0a0;
 }
 
 .preview-loading p {

@@ -3,7 +3,7 @@
     <div class="app-preview">
       <img v-if="app.cover" :src="app.cover" :alt="app.appName" />
       <div v-else class="app-placeholder">
-        <span>🤖</span>
+        <span class="placeholder-text">craft</span>
       </div>
       <div class="app-overlay">
         <a-space>
@@ -56,12 +56,12 @@ const handleViewWork = () => {
 
 <style scoped>
 .app-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(22, 33, 62, 0.95);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #2a2a4a;
   transition:
     transform 0.3s,
     box-shadow 0.3s;
@@ -70,12 +70,12 @@ const handleViewWork = () => {
 
 .app-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
 }
 
 .app-preview {
   height: 180px;
-  background: #f5f5f5;
+  background: #1a1a2e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,8 +90,20 @@ const handleViewWork = () => {
 }
 
 .app-placeholder {
-  font-size: 48px;
-  color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder-text {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #D4AF37 50%, #F6E4B5 75%, #B38728 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .app-overlay {
@@ -132,7 +144,7 @@ const handleViewWork = () => {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 4px;
-  color: #1a1a1a;
+  color: #e0e0e0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -140,7 +152,7 @@ const handleViewWork = () => {
 
 .app-author {
   font-size: 14px;
-  color: #666;
+  color: #a0a0a0;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;

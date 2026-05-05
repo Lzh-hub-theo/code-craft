@@ -8,7 +8,7 @@
           rel="noopener noreferrer"
           class="author-link"
         >
-          编程导航原创项目 by 程序员鱼皮
+          Code Craft 智能应用生成系统
         </a>
       </p>
     </div>
@@ -21,17 +21,21 @@
 
 <style scoped>
 .footer {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(22, 33, 62, 0.95);
   backdrop-filter: blur(10px);
   text-align: center;
   padding: 20px;
   margin-top: 40px;
-  border-top: 1px solid rgba(102, 126, 234, 0.1);
+  border-top: 1px solid #2a2a4a;
 }
 
 .copyright {
   margin: 0;
-  color: #666;
+  color: #a0a0a0;
   font-size: 14px;
+}
+
+.author-link {
+  color: #D4AF37;
 }
 </style>

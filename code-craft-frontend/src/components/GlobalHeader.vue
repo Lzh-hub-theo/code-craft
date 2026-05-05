@@ -6,7 +6,7 @@
         <RouterLink to="/">
           <div class="header-left">
             <img class="logo" src="@/assets/logo.png" alt="Logo" />
-            <h1 class="site-title">鱼皮应用生成</h1>
+            <h1 class="site-title">Code Craft</h1>
           </div>
         </RouterLink>
       </a-col>
@@ -81,12 +81,7 @@ const originItems = [
     key: '/admin/appManage',
     label: '应用管理',
     title: '应用管理',
-  },
-  {
-    key: 'others',
-    label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
-    title: '编程导航',
-  },
+  }
 ]
 
 // 过滤菜单项
@@ -133,8 +128,9 @@ const doLogout = async () => {
 
 <style scoped>
 .header {
-  background: #fff;
+  background: #16213e;
   padding: 0 24px;
+  border-bottom: 1px solid #2a2a4a;
 }
 
 .header-left {
@@ -151,10 +147,50 @@ const doLogout = async () => {
 .site-title {
   margin: 0;
   font-size: 18px;
-  color: #1890ff;
+  color: #D4AF37;
 }
 
-.ant-menu-horizontal {
+.user-login-status {
+  color: #fff;
+}
+
+.user-login-status .ant-avatar {
+  margin-right: 4px;
+}
+
+/* 菜单栏黑底白字 */
+:deep(.ant-menu) {
+  background: #16213e;
+  color: #e0e0e0;
+}
+
+:deep(.ant-menu-horizontal) {
   border-bottom: none !important;
+  background: #16213e;
+}
+
+:deep(.ant-menu-item),
+:deep(.ant-menu-submenu) {
+  color: #e0e0e0 !important;
+}
+
+:deep(.ant-menu-item:hover),
+:deep(.ant-menu-submenu:hover) {
+  background: #2a2a4a !important;
+  color: #fff !important;
+}
+
+:deep(.ant-menu-item:hover::after),
+:deep(.ant-menu-submenu:hover::after) {
+  border-bottom-color: #D4AF37 !important;
+}
+
+:deep(.ant-menu-item-selected) {
+  background: #2a2a4a !important;
+  color: #D4AF37 !important;
+}
+
+:deep(.ant-menu-item-selected::after) {
+  border-bottom-color: #D4AF37 !important;
 }
 </style>
