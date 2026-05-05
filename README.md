@@ -10,6 +10,17 @@
 
 Code Craft 智能应用生成系统是一个全栈 AI 代码生成平台，用户可以通过与 AI 对话来创建网站应用、实时查看生成的网站效果、部署应用、管理个人应用等。项目采用前后端分离架构，支持单体架构和微服务架构两种部署方式。
 
+### 项目预览
+
+#### 首页
+![image/index.png](image/index.png)
+
+#### 登录页
+![image/login.png](image/login.png)
+
+#### 对话页
+![image/chat.png](image/chat.png)
+
 ### ✨ 核心特性
 
 - 🤖 **AI 对话生成代码**：通过与 AI 对话生成网站应用代码，支持实时预览

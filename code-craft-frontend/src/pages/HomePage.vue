@@ -162,7 +162,7 @@ onMounted(() => {
       <!-- 网站标题和描述 -->
       <div class="hero-section">
         <h1 class="hero-title">Code Craft Platform</h1>
-        <p class="hero-description">语落成章，网站即现</p>
+        <p class="hero-description">"语落成章，网站即现"</p>
       </div>
 
       <!-- 用户提示词输入框 -->

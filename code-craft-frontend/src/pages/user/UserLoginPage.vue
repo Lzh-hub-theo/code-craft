@@ -97,4 +97,30 @@ const handleSubmit = async (values: any) => {
 :deep(.tips a:hover) {
   color: #E5C158;
 }
+
+/* 输入框深灰色背景、浅灰色文字 */
+:deep(.ant-input) {
+  background: #2a2a4a !important;
+  color: #c0c0c0 !important;
+  border-color: #3a3a5a !important;
+}
+
+:deep(.ant-input::placeholder) {
+  color: #888 !important;
+}
+
+/* 密码输入框深灰色背景 */
+:deep(.ant-input-password) {
+  background: #2a2a4a !important;
+  border-color: #3a3a5a !important;
+}
+
+:deep(.ant-input-password input) {
+  background: #2a2a4a !important;
+  color: #c0c0c0 !important;
+}
+
+:deep(.ant-input-password-icon) {
+  color: #888 !important;
+}
 </style>

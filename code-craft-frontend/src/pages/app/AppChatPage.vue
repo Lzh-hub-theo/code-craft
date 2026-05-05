@@ -838,6 +838,25 @@ onUnmounted(() => {
   scroll-behavior: smooth;
 }
 
+/* 滚动条样式 */
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #3a3a5a;
+  border-radius: 4px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
 .message-item {
   margin-bottom: 12px;
 }
@@ -865,14 +884,15 @@ onUnmounted(() => {
 }
 
 .user-message .message-content {
-  background: #1890ff;
+  background: #1a1a2e;
   color: white;
+  border: none;
 }
 
 .ai-message .message-content {
-  background: #2a2a4a;
+  background: #1a1a2e;
   color: #e0e0e0;
-  padding: 8px 12px;
+  border: none;
 }
 
 .message-avatar {
@@ -903,11 +923,18 @@ onUnmounted(() => {
   position: relative;
 }
 
-.input-wrapper .ant-input {
+.input-wrapper .ant-input,
+.input-wrapper .ant-input-affix-wrapper {
   padding-right: 50px;
-  background: #2a2a4a;
-  color: #e0e0e0;
-  border-color: #3a3a5a;
+  background: #1a1a2e !important;
+  color: #e0e0e0 !important;
+  border-color: #3a3a5a !important;
+}
+
+.input-wrapper .ant-input:focus,
+.input-wrapper .ant-input-affix-wrapper-focused {
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
 .input-actions {
@@ -945,6 +972,14 @@ onUnmounted(() => {
 .preview-actions {
   display: flex;
   gap: 8px;
+}
+
+.preview-actions :deep(.ant-btn-link) {
+  color: #D4AF37 !important;
+}
+
+.preview-actions :deep(.ant-btn-link:hover) {
+  color: #E5C158 !important;
 }
 
 .preview-content {

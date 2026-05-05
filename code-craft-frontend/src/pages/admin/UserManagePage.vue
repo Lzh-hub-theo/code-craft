@@ -183,12 +183,17 @@ const doDelete = async (id: number) => {
 :deep(.ant-table-tbody > tr > td) {
   background: #16213e !important;
   border-bottom: 1px solid #2a2a4a;
+  border-right: 1px solid #2a2a4a !important;
   color: #e0e0e0;
   transition: background 0.2s;
 }
 
 :deep(.ant-table-tbody > tr:hover > td) {
   background: #2a2a4a !important;
+}
+
+:deep(.ant-table-cell) {
+  border-color: #2a2a4a !important;
 }
 
 :deep(.ant-form-item-label > label) {
