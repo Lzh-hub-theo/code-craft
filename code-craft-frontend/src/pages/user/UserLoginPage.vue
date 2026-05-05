@@ -89,4 +89,12 @@ const handleSubmit = async (values: any) => {
   font-size: 13px;
   text-align: right;
 }
+
+:deep(.tips a) {
+  color: #D4AF37;
+}
+
+:deep(.tips a:hover) {
+  color: #E5C158;
+}
 </style>

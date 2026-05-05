@@ -248,4 +248,12 @@ const doDelete = async (id: number) => {
 :deep(.ant-pagination-item-active a) {
   color: #D4AF37;
 }
+
+:deep(.ant-pagination-item-active:hover) {
+  border-color: #D4AF37 !important;
+}
+
+:deep(.ant-pagination-item-active:hover a) {
+  color: #D4AF37 !important;
+}
 </style>

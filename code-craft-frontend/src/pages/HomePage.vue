@@ -582,6 +582,14 @@ onMounted(() => {
   color: #D4AF37;
 }
 
+:deep(.ant-pagination-item-active:hover) {
+  border-color: #D4AF37 !important;
+}
+
+:deep(.ant-pagination-item-active:hover a) {
+  color: #D4AF37 !important;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .hero-title {

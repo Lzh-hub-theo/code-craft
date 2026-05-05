@@ -386,6 +386,14 @@ const deleteApp = async (id: number | undefined) => {
   color: #D4AF37;
 }
 
+:deep(.ant-pagination-item-active:hover) {
+  border-color: #D4AF37 !important;
+}
+
+:deep(.ant-pagination-item-active:hover a) {
+  color: #D4AF37 !important;
+}
+
 :deep(.ant-divider) {
   border-color: #2a2a4a;
 }
