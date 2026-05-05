@@ -1,10 +1,10 @@
 # 数据库初始化
 
 -- 创建库
-create database if not exists yu_ai_code_mother;
+create database if not exists code_craft;
 
 -- 切换库
-use yu_ai_code_mother;
+use code_craft;
 
 -- 用户表
 -- 以下是建表语句
@@ -46,7 +46,7 @@ create table app
     UNIQUE KEY uk_deployKey (deployKey), -- 确保部署标识唯一
     INDEX idx_appName (appName),         -- 提升基于应用名称的查询性能
     INDEX idx_userId (userId)            -- 提升基于用户id的查询性能
-) comment '应用' collate = utf8mb4_unicode_ci
+) comment '应用' collate = utf8mb4_unicode_ci;
 
 -- 对话历史表
 create table chat_history
