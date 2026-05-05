@@ -893,6 +893,26 @@ onUnmounted(() => {
   background: #1a1a2e;
   color: #e0e0e0;
   border: none;
+  overflow-x: auto;
+}
+
+/* AI消息内Markdown滚动条样式 */
+.ai-message .message-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ai-message .message-content::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+
+.ai-message .message-content::-webkit-scrollbar-thumb {
+  background: #3a3a5a;
+  border-radius: 4px;
+}
+
+.ai-message .message-content::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
 }
 
 .message-avatar {

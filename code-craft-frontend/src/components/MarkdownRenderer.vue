@@ -131,6 +131,25 @@ const renderedMarkdown = computed(() => {
   margin: 1em 0;
 }
 
+/* 代码块滚动条样式 */
+.markdown-content :deep(pre)::-webkit-scrollbar {
+  height: 8px;
+}
+
+.markdown-content :deep(pre)::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+
+.markdown-content :deep(pre)::-webkit-scrollbar-thumb {
+  background: #3a3a5a;
+  border-radius: 4px;
+}
+
+.markdown-content :deep(pre)::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
 .markdown-content :deep(pre code) {
   background-color: transparent;
   padding: 0;
