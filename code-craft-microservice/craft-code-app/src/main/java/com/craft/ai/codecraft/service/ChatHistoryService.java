@@ -3,9 +3,9 @@ package com.craft.ai.codecraft.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
-import com.yu.ai.codecraft.model.dto.chathistory.ChatHistoryQueryRequest;
-import com.yu.ai.codecraft.model.entity.ChatHistory;
-import com.yu.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.model.dto.chathistory.ChatHistoryQueryRequest;
+import com.craft.ai.codecraft.model.entity.ChatHistory;
+import com.craft.ai.codecraft.model.entity.User;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 
 import java.time.LocalDateTime;

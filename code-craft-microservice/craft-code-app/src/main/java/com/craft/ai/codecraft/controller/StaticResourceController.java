@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import java.io.File;
 
-import static com.yu.ai.codecraft.constant.AppConstant.CODE_OUTPUT_ROOT_DIR;
+import static com.craft.ai.codecraft.constant.AppConstant.CODE_OUTPUT_ROOT_DIR;
 
 @RestController
 @RequestMapping("/static")

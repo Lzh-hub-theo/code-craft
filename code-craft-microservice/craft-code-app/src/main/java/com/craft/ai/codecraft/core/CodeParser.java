@@ -1,7 +1,7 @@
 package com.craft.ai.codecraft.core;
 
-import com.yu.ai.codecraft.ai.model.HtmlCodeResult;
-import com.yu.ai.codecraft.ai.model.MultiFileCodeResult;
+import com.craft.ai.codecraft.ai.model.HtmlCodeResult;
+import com.craft.ai.codecraft.ai.model.MultiFileCodeResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

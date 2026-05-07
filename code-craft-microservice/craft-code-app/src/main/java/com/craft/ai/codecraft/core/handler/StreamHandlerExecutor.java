@@ -1,8 +1,8 @@
 package com.craft.ai.codecraft.core.handler;
 
-import com.yu.ai.codecraft.model.entity.User;
-import com.yu.ai.codecraft.model.enums.CodeGenTypeEnum;
-import com.yu.ai.codecraft.service.ChatHistoryService;
+import com.craft.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.model.enums.CodeGenTypeEnum;
+import com.craft.ai.codecraft.service.ChatHistoryService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

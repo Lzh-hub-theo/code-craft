@@ -1,6 +1,6 @@
 package com.craft.ai.codecraft.ratelimit.annotation;
 
-import com.yu.ai.codecraft.ratelimit.enums.RateLimitType;
+import com.craft.ai.codecraft.ratelimit.enums.RateLimitType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

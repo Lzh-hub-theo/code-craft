@@ -3,14 +3,14 @@ package com.craft.ai.codecraft.core;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.yu.ai.codecraft.ai.model.HtmlCodeResult;
-import com.yu.ai.codecraft.ai.model.MultiFileCodeResult;
-import com.yu.ai.codecraft.model.enums.CodeGenTypeEnum;
+import com.craft.ai.codecraft.ai.model.HtmlCodeResult;
+import com.craft.ai.codecraft.ai.model.MultiFileCodeResult;
+import com.craft.ai.codecraft.model.enums.CodeGenTypeEnum;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
-import static com.yu.ai.codecraft.constant.AppConstant.CODE_OUTPUT_ROOT_DIR;
+import static com.craft.ai.codecraft.constant.AppConstant.CODE_OUTPUT_ROOT_DIR;
 
 @Deprecated
 public class CodeFileSaver {

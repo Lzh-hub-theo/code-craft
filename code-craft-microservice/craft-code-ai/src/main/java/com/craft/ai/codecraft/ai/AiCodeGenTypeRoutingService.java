@@ -1,6 +1,6 @@
 package com.craft.ai.codecraft.ai;
 
-import com.yu.ai.codecraft.model.enums.CodeGenTypeEnum;
+import com.craft.ai.codecraft.model.enums.CodeGenTypeEnum;
 import dev.langchain4j.service.SystemMessage;
 
 /**

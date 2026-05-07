@@ -1,11 +1,11 @@
 package com.craft.ai.codecraft.aop;
 
-import com.yu.ai.codecraft.annotation.AuthCheck;
-import com.yu.ai.codecraft.exception.BusinessException;
-import com.yu.ai.codecraft.exception.ErrorCode;
-import com.yu.ai.codecraft.innerservice.InnerUserService;
-import com.yu.ai.codecraft.model.entity.User;
-import com.yu.ai.codecraft.model.enums.UserRoleEnum;
+import com.craft.ai.codecraft.annotation.AuthCheck;
+import com.craft.ai.codecraft.exception.BusinessException;
+import com.craft.ai.codecraft.exception.ErrorCode;
+import com.craft.ai.codecraft.innerservice.InnerUserService;
+import com.craft.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.model.enums.UserRoleEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

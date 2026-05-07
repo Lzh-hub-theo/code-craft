@@ -2,11 +2,11 @@ package com.craft.ai.codecraft.service;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
-import com.yu.ai.codecraft.model.dto.app.AppAddRequest;
-import com.yu.ai.codecraft.model.dto.app.AppQueryRequest;
-import com.yu.ai.codecraft.model.entity.App;
-import com.yu.ai.codecraft.model.entity.User;
-import com.yu.ai.codecraft.model.vo.AppVO;
+import com.craft.ai.codecraft.model.dto.app.AppAddRequest;
+import com.craft.ai.codecraft.model.dto.app.AppQueryRequest;
+import com.craft.ai.codecraft.model.entity.App;
+import com.craft.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.model.vo.AppVO;
 import reactor.core.publisher.Flux;
 
 import java.util.List;

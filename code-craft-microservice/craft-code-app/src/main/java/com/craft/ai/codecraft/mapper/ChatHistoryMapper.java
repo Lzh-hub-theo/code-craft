@@ -1,7 +1,7 @@
 package com.craft.ai.codecraft.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.yu.ai.codecraft.model.entity.ChatHistory;
+import com.craft.ai.codecraft.model.entity.ChatHistory;
 
 /**
  *  映射层。

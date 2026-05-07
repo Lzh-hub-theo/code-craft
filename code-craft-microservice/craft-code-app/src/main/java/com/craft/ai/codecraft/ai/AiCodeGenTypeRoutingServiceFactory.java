@@ -1,6 +1,6 @@
 package com.craft.ai.codecraft.ai;
 
-import com.yu.ai.codecraft.utils.SpringContextUtil;
+import com.craft.ai.codecraft.utils.SpringContextUtil;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.service.AiServices;
 import lombok.extern.slf4j.Slf4j;

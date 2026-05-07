@@ -1,10 +1,10 @@
 package com.craft.ai.codecraft.ratelimit.aspect;
 
-import com.yu.ai.codecraft.exception.BusinessException;
-import com.yu.ai.codecraft.exception.ErrorCode;
-import com.yu.ai.codecraft.innerservice.InnerUserService;
-import com.yu.ai.codecraft.model.entity.User;
-import com.yu.ai.codecraft.ratelimit.annotation.RateLimit;
+import com.craft.ai.codecraft.exception.BusinessException;
+import com.craft.ai.codecraft.exception.ErrorCode;
+import com.craft.ai.codecraft.innerservice.InnerUserService;
+import com.craft.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.ratelimit.annotation.RateLimit;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package com.craft.ai.codecraft.core.handler;
 
 import cn.hutool.core.util.StrUtil;
-import com.yu.ai.codecraft.model.entity.User;
-import com.yu.ai.codecraft.model.enums.ChatHistoryMessageTypeEnum;
-import com.yu.ai.codecraft.service.ChatHistoryService;
+import com.craft.ai.codecraft.model.entity.User;
+import com.craft.ai.codecraft.model.enums.ChatHistoryMessageTypeEnum;
+import com.craft.ai.codecraft.service.ChatHistoryService;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
