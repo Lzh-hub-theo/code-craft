@@ -1,0 +1,11 @@
+package com.craft.ai.codecraft.mapper;
+
+import com.mybatisflex.core.BaseMapper;
+import com.craft.ai.codecraft.model.entity.User;
+
+/**
+ *  映射层。
+ */
+public interface UserMapper extends BaseMapper<User> {
+
+}
