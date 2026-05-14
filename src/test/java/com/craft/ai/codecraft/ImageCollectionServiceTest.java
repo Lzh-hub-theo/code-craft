@@ -1,16 +1,26 @@
 package com.craft.ai.codecraft;
 
 import com.craft.ai.codecraft.langgraph4j.ai.ImageCollectionService;
+import com.craft.ai.codecraft.model.entity.User;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.mockito.Mockito.when;
+
+
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class ImageCollectionServiceTest {
 
     @Resource
     private ImageCollectionService imageCollectionService;
+    @Mock
+    private User user;
 
     @Test
     void testTechWebsiteImageCollection() {
@@ -24,5 +34,11 @@ class ImageCollectionServiceTest {
         String result = imageCollectionService.collectImages("创建一个电商购物网站，需要展示商品和品牌形象");
         Assertions.assertNotNull(result);
         System.out.println("电商网站收集到的图片: " + result);
+    }
+
+    @Test
+    void good(){
+        when(user.getId()).thenReturn(1L);
+        System.out.println(user.getId());
     }
 }

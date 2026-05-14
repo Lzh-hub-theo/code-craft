@@ -62,7 +62,7 @@ public class MyBatisCodeGenerator {
         globalConfig.enableController();
 
         globalConfig.getJavadocConfig()
-                .setAuthor("鱼皮")
+                .setAuthor("Lzh-hub-theo")
                 .setSince("");
         return globalConfig;
     }

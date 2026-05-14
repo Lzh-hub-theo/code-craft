@@ -6,7 +6,7 @@ import com.craft.ai.codecraft.model.entity.App;
 /**
  *  映射层。
  *
- * @author 鱼皮
+ * @author Lzh-hub-theo
  */
 public interface AppMapper extends BaseMapper<App> {
 

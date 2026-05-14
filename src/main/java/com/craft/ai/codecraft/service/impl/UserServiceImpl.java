@@ -27,7 +27,7 @@ import static com.craft.ai.codecraft.constant.UserConstant.USER_LOGIN_STATE;
 /**
  *  服务层实现。
  *
- * @author 鱼皮
+ * @author Lzh-hub-theo
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements UserService {

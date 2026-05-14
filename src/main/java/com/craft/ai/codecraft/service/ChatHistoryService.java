@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 /**
  *  服务层。
  *
- * @author 鱼皮
+ * @author Lzh-hub-theo
  */
 public interface ChatHistoryService extends IService<ChatHistory> {
     int loadChatHistoryToMemory(Long appId, MessageWindowChatMemory chatMemory, int maxCount);

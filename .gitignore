@@ -38,4 +38,4 @@ application-prod.yml
 
 # 忽略代码生成目录
 /tmp/
-/yu-ai-code-mother-microservice/tmp/
+/code-craft-microservice/tmp/
