@@ -60,8 +60,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
-        user.setUserName("无名");
-        user.setUserRole(UserRoleEnum.USER.getValue());
+        user.setUserName(userAccount);
+        if(!"admin".equals(userAccount)) {
+            user.setUserRole(UserRoleEnum.USER.getValue());
+        } else {
+            user.setUserRole(UserRoleEnum.ADMIN.getValue());
+        }
         boolean saveResult = this.save(user);
         if(!saveResult){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"注册失败,数据库错误");
