@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @ConfigurationProperties(prefix = "langchain4j.open-ai.reasoning-streaming-chat-model")
@@ -48,6 +49,8 @@ public class ReasoningStreamingChatModelConfig {
                 .logResponses(true)
                 .timeout(timeout)
                 .listeners(List.of(aiModelMonitorListener))
+                // 全局禁用 gzip 压缩
+                .customHeaders(Map.of("Accept-Encoding", "identity"))
                 .build();
     }
 }
