@@ -39,3 +39,8 @@ application-prod.yml
 # 忽略代码生成目录
 /tmp/
 /code-craft-microservice/tmp/
+
+# 忽略本地 agent 文件
+.agents/
+skills-lock.json
+review/
