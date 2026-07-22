@@ -113,4 +113,34 @@ const handleDelete = () => {
   padding-top: 16px;
   border-top: 1px solid #f0f0f0;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .app-basic-info {
+    margin-bottom: 16px;
+  }
+
+  .info-item {
+    flex-wrap: wrap;
+  }
+
+  .info-label {
+    width: 72px;
+    font-size: 13px;
+  }
+
+  .app-actions :deep(.ant-space) {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .app-actions :deep(.ant-space-item) {
+    flex: 1;
+  }
+
+  .app-actions :deep(.ant-btn) {
+    width: 100%;
+  }
+}
 </style>

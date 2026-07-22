@@ -13,7 +13,7 @@
           <template #icon>
             <InfoCircleOutlined/>
           </template>
-          应用详情
+          <span class="btn-text">应用详情</span>
         </a-button>
         <a-button
           type="primary"
@@ -25,19 +25,36 @@
           <template #icon>
             <DownloadOutlined/>
           </template>
-          下载代码
+          <span class="btn-text">下载代码</span>
         </a-button>
         <a-button type="primary" @click="deployApp" :loading="deploying">
           <template #icon>
             <CloudUploadOutlined/>
           </template>
-          部署
+          <span class="btn-text">部署</span>
         </a-button>
       </div>
     </div>
 
     <!-- 主要内容区域 -->
-    <div class="main-content">
+    <div
+      class="main-content"
+      :class="{
+        'mobile-show-chat': mobileView === 'chat',
+        'mobile-show-preview': mobileView === 'preview',
+      }"
+    >
+      <!-- 移动端：对话/预览切换 -->
+      <div class="mobile-view-switch">
+        <a-segmented
+          v-model:value="mobileView"
+          :options="[
+            { label: '对话', value: 'chat' },
+            { label: '预览', value: 'preview' },
+          ]"
+          block
+        />
+      </div>
       <!-- 左侧对话区域 -->
       <div class="chat-section">
         <!-- 消息区域 -->
@@ -242,6 +259,9 @@ import {
 const route = useRoute()
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
+
+// 移动端对话/预览视图切换
+const mobileView = ref<'chat' | 'preview'>('chat')
 
 // 应用信息
 const appInfo = ref<API.AppVO>()
@@ -778,6 +798,11 @@ onUnmounted(() => {
   background: #1a1a2e;
 }
 
+/* 移动端视图切换默认隐藏（仅移动端显示） */
+.mobile-view-switch {
+  display: none;
+}
+
 /* 顶部栏 */
 .header-bar {
   display: flex;
@@ -1059,26 +1084,110 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  #appChatPage {
+    /* 减去顶部导航栏高度，填满剩余视口；使用 dvh 适配移动端地址栏 */
+    height: calc(100dvh - 56px);
+    padding: 8px;
+  }
+
+  /* 顶部栏：图标化按钮，紧凑布局 */
   .header-bar {
-    padding: 12px 16px;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .header-left {
+    min-width: 0;
+    flex: 1;
   }
 
   .app-name {
-    font-size: 16px;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  .header-right {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .header-right .ant-btn {
+    padding: 0 10px;
+  }
+
+  /* 隐藏按钮文字，仅保留图标 */
+  .btn-text {
+    display: none;
+  }
+
+  .code-gen-type-tag {
+    font-size: 11px;
+    margin: 0;
+  }
+
+  /* 主内容区 */
   .main-content {
-    padding: 8px;
+    padding: 0;
     gap: 8px;
+    overflow: hidden;
+  }
+
+  /* 显示移动端视图切换 */
+  .mobile-view-switch {
+    display: block;
+    padding: 4px 0 8px;
+  }
+
+  /* 对话/预览仅显示当前选中的一个 */
+  .chat-section,
+  .preview-section {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+  }
+
+  .main-content.mobile-show-chat .preview-section {
+    display: none;
+  }
+
+  .main-content.mobile-show-preview .chat-section {
+    display: none;
+  }
+
+  .messages-container {
+    padding: 12px;
   }
 
   .message-content {
     max-width: 85%;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .input-container {
+    padding: 10px;
+  }
+
+  /* 输入框默认 2 行，节省移动端空间 */
+  .input-wrapper :deep(textarea.ant-input) {
+    min-height: 48px !important;
+    height: 56px !important;
+    resize: none;
+  }
+
+  .preview-header {
+    padding: 10px 12px;
+  }
+
+  .preview-header h3 {
+    font-size: 14px;
   }
 
   /* 选中元素信息样式 */
   .selected-element-alert {
-    margin: 0 16px;
+    margin: 0 12px;
   }
 
   .selected-element-info {

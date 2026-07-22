@@ -88,7 +88,7 @@
 
       <!-- 应用信息展示 -->
       <a-card title="应用信息" style="margin-top: 24px">
-        <a-descriptions :column="2" bordered>
+        <a-descriptions :column="{ xs: 1, sm: 1, md: 2 }" bordered>
           <a-descriptions-item label="应用ID">
             {{ appInfo?.id }}
           </a-descriptions-item>
@@ -319,5 +319,31 @@ onMounted(() => {
 :deep(.ant-descriptions-item-label) {
   background: #fafafa;
   font-weight: 500;
+}
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  #appEditPage {
+    padding: 12px;
+    max-width: 100%;
+  }
+
+  .page-header {
+    margin-bottom: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 20px;
+  }
+
+  .cover-preview {
+    margin-top: 10px;
+    padding: 8px;
+  }
+
+  .cover-preview :deep(.ant-image) {
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 </style>

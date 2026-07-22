@@ -38,4 +38,17 @@
 .author-link {
   color: #D4AF37;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .footer {
+    padding: 14px 12px;
+    margin-top: 24px;
+  }
+
+  .copyright {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
 </style>

@@ -1,32 +1,34 @@
 <template>
   <a-layout-header class="header">
-    <a-row :wrap="false">
+    <div class="header-inner">
       <!-- 左侧：Logo和标题 -->
-      <a-col flex="200px">
+      <div class="header-left">
         <RouterLink to="/">
           <div class="header-left">
             <img class="logo" src="@/assets/logo.png" alt="Logo" />
             <h1 class="site-title">Code Craft</h1>
           </div>
         </RouterLink>
-      </a-col>
-      <!-- 中间：导航菜单 -->
-      <a-col flex="auto">
+      </div>
+
+      <!-- 中间：桌面端导航菜单 -->
+      <div class="header-menu-desktop">
         <a-menu
           v-model:selectedKeys="selectedKeys"
           mode="horizontal"
           :items="menuItems"
           @click="handleMenuClick"
         />
-      </a-col>
+      </div>
+
       <!-- 右侧：用户操作区域 -->
-      <a-col>
+      <div class="header-right">
         <div class="user-login-status">
           <div v-if="loginUserStore.loginUser.id">
             <a-dropdown>
               <a-space>
                 <a-avatar :src="loginUserStore.loginUser.userAvatar" />
-                {{ loginUserStore.loginUser.userName ?? '无名' }}
+                <span class="user-name-text">{{ loginUserStore.loginUser.userName ?? '无名' }}</span>
               </a-space>
               <template #overlay>
                 <a-menu>
@@ -42,8 +44,43 @@
             <a-button type="primary" href="/user/login">登录</a-button>
           </div>
         </div>
-      </a-col>
-    </a-row>
+        <!-- 移动端汉堡菜单按钮 -->
+        <a-button class="header-menu-toggle" type="text" @click="mobileMenuVisible = true">
+          <MenuOutlined />
+        </a-button>
+      </div>
+    </div>
+
+    <!-- 移动端抽屉菜单 -->
+    <a-drawer
+      v-model:open="mobileMenuVisible"
+      placement="right"
+      title="菜单"
+      width="260px"
+      class="mobile-menu-drawer"
+    >
+      <a-menu
+        v-model:selectedKeys="selectedKeys"
+        mode="inline"
+        :items="menuItems"
+        @click="handleMobileMenuClick"
+      />
+      <div class="mobile-user-area">
+        <template v-if="loginUserStore.loginUser.id">
+          <div class="mobile-user-info">
+            <a-avatar :src="loginUserStore.loginUser.userAvatar" />
+            <span>{{ loginUserStore.loginUser.userName ?? '无名' }}</span>
+          </div>
+          <a-button block @click="doLogout">
+            <LogoutOutlined />
+            退出登录
+          </a-button>
+        </template>
+        <template v-else>
+          <a-button type="primary" block href="/user/login">登录</a-button>
+        </template>
+      </div>
+    </a-drawer>
   </a-layout-header>
 </template>
 
@@ -53,12 +90,14 @@ import { useRouter } from 'vue-router'
 import { type MenuProps, message } from 'ant-design-vue'
 import { useLoginUserStore } from '@/stores/loginUser.ts'
 import { userLogout } from '@/api/userController.ts'
-import { LogoutOutlined, HomeOutlined } from '@ant-design/icons-vue'
+import { LogoutOutlined, HomeOutlined, MenuOutlined } from '@ant-design/icons-vue'
 
 const loginUserStore = useLoginUserStore()
 const router = useRouter()
 // 当前选中菜单
 const selectedKeys = ref<string[]>(['/'])
+// 移动端抽屉菜单显隐
+const mobileMenuVisible = ref(false)
 // 监听路由变化，更新当前选中菜单
 router.afterEach((to) => {
   selectedKeys.value = [to.path]
@@ -111,6 +150,12 @@ const handleMenuClick: MenuProps['onClick'] = (e) => {
   }
 }
 
+// 移动端菜单点击：跳转后关闭抽屉
+const handleMobileMenuClick: MenuProps['onClick'] = (e) => {
+  handleMenuClick(e)
+  mobileMenuVisible.value = false
+}
+
 // 用户注销
 const doLogout = async () => {
   const res = await userLogout()
@@ -118,6 +163,7 @@ const doLogout = async () => {
     loginUserStore.setLoginUser({
       userName: '未登录',
     })
+    mobileMenuVisible.value = false
     message.success('退出登录成功')
     await router.push('/user/login')
   } else {
@@ -131,23 +177,55 @@ const doLogout = async () => {
   background: #16213e;
   padding: 0 24px;
   border-bottom: 1px solid #2a2a4a;
+  height: 64px;
+  line-height: 64px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 16px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .logo {
-  height: 48px;
-  width: 48px;
+  height: 40px;
+  width: 40px;
 }
 
 .site-title {
   margin: 0;
   font-size: 18px;
   color: #D4AF37;
+  white-space: nowrap;
+}
+
+.header-menu-desktop {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 汉堡按钮仅移动端显示 */
+.header-menu-toggle {
+  display: none;
+  color: #e0e0e0;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-login-status {
@@ -167,6 +245,7 @@ const doLogout = async () => {
 :deep(.ant-menu-horizontal) {
   border-bottom: none !important;
   background: #16213e;
+  line-height: 62px;
 }
 
 :deep(.ant-menu-item),
@@ -192,5 +271,72 @@ const doLogout = async () => {
 
 :deep(.ant-menu-item-selected::after) {
   border-bottom-color: #D4AF37 !important;
+}
+
+/* 抽屉内菜单样式 */
+.mobile-menu-drawer :deep(.ant-menu-inline) {
+  background: transparent;
+  border-right: none;
+}
+
+.mobile-user-area {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #2a2a4a;
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e0e0e0;
+  margin-bottom: 12px;
+  padding: 4px 0;
+}
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 12px;
+    height: 56px;
+    line-height: 56px;
+  }
+
+  .header-inner {
+    gap: 8px;
+  }
+
+  .logo {
+    height: 32px;
+    width: 32px;
+  }
+
+  .site-title {
+    font-size: 16px;
+  }
+
+  /* 隐藏桌面横向菜单 */
+  .header-menu-desktop {
+    display: none;
+  }
+
+  /* 右侧区域（头像 + 三条杠）整体靠右，三条杠位于最右 */
+  .header-right {
+    margin-left: auto;
+  }
+
+  /* 显示汉堡按钮 */
+  .header-menu-toggle {
+    display: inline-flex;
+  }
+
+  /* 移动端隐藏用户名，仅保留头像，节省空间 */
+  .user-name-text {
+    display: none;
+  }
+
+  :deep(.ant-menu-horizontal) {
+    line-height: 54px;
+  }
 }
 </style>

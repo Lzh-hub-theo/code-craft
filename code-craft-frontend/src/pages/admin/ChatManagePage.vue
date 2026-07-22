@@ -213,4 +213,47 @@ const deleteMessage = async (id: number | undefined) => {
 :deep(.ant-table-tbody > tr > td) {
   vertical-align: middle;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  #chatManagePage {
+    padding: 12px;
+    margin-top: 8px;
+  }
+
+  /* 搜索表单堆叠为纵向 */
+  :deep(.ant-form-inline) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  :deep(.ant-form-inline .ant-form-item) {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  :deep(.ant-form-inline .ant-form-item-control-input) {
+    width: 100%;
+  }
+
+  :deep(.ant-form-inline .ant-input),
+  :deep(.ant-form-inline .ant-select) {
+    width: 100% !important;
+  }
+
+  :deep(.ant-divider) {
+    margin: 12px 0;
+  }
+
+  :deep(.ant-table-cell .ant-space) {
+    gap: 4px !important;
+  }
+
+  :deep(.ant-table-cell .ant-btn-sm) {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}
 </style>

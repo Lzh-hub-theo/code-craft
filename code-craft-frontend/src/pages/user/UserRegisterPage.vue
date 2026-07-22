@@ -145,4 +145,24 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 :deep(.ant-input-password-icon) {
   color: #888 !important;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  #userRegisterPage {
+    max-width: 100%;
+    margin: 12px;
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .desc {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+}
 </style>

@@ -592,21 +592,95 @@ onMounted(() => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+
+  .hero-section {
+    padding: 32px 0 28px;
+    margin-bottom: 16px;
+  }
+
   .hero-title {
-    font-size: 32px;
+    font-size: 30px;
+    letter-spacing: 0;
   }
 
   .hero-description {
+    font-size: 15px;
+  }
+
+  /* 输入区域 */
+  .input-section {
+    margin: 0 auto 16px;
+  }
+
+  .prompt-input {
     font-size: 16px;
+    padding: 16px 56px 16px 14px;
+    border-radius: 14px;
+  }
+
+  .input-actions {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .input-actions .ant-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  /* 快捷按钮：移动端两列网格，便于触摸 */
+  .quick-actions {
+    gap: 10px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-actions .ant-btn {
+    border-radius: 12px;
+    padding: 10px 12px;
+    height: auto;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 区域标题与间距 */
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 22px;
+    margin-bottom: 16px;
   }
 
   .app-grid,
   .featured-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .pagination-wrapper {
+    margin-top: 20px;
+  }
+}
+
+/* 超小屏：快捷按钮单列 */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 26px;
   }
 
   .quick-actions {
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -261,4 +261,42 @@ const doDelete = async (id: number) => {
 :deep(.ant-pagination-item-active:hover a) {
   color: #D4AF37 !important;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  #userManagePage {
+    padding: 12px;
+    margin-top: 8px;
+  }
+
+  /* 搜索表单堆叠为纵向 */
+  :deep(.ant-form-inline) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  :deep(.ant-form-inline .ant-form-item) {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  :deep(.ant-form-inline .ant-form-item-control-input) {
+    width: 100%;
+  }
+
+  :deep(.ant-form-inline .ant-input) {
+    width: 100% !important;
+  }
+
+  :deep(.ant-divider) {
+    margin: 12px 0;
+  }
+
+  /* 用户头像在移动端缩小 */
+  :deep(.ant-table-cell .ant-image) {
+    width: 60px !important;
+  }
+}
 </style>

@@ -95,4 +95,30 @@ const handleClose = () => {
   gap: 12px;
   justify-content: center;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .deploy-success {
+    padding: 12px;
+  }
+
+  .deploy-success h3 {
+    font-size: 18px;
+  }
+
+  .deploy-success p {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* 按钮在移动端纵向铺满 */
+  .deploy-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .deploy-actions .ant-btn {
+    width: 100%;
+  }
+}
 </style>

@@ -158,4 +158,54 @@ const handleViewWork = () => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .app-card {
+    border-radius: 12px;
+  }
+
+  .app-card:hover {
+    /* 移动端无 hover，去除位移避免误触抖动 */
+    transform: none;
+  }
+
+  .app-preview {
+    height: 150px;
+  }
+
+  .placeholder-text {
+    font-size: 28px;
+  }
+
+  /* 移动端无 hover，操作按钮常显 */
+  .app-overlay {
+    opacity: 1;
+    /* 底部渐变遮罩，避免遮挡预览主体 */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 10px;
+  }
+
+  .app-overlay :deep(.ant-btn) {
+    height: 30px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .app-info {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .app-title {
+    font-size: 15px;
+  }
+
+  .app-author {
+    font-size: 13px;
+  }
+}
 </style>
