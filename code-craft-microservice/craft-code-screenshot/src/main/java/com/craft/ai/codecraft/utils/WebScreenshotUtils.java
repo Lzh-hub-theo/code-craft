@@ -7,7 +7,6 @@ import cn.hutool.core.util.StrUtil;
 import com.craft.ai.codecraft.exception.BusinessException;
 import com.craft.ai.codecraft.exception.ErrorCode;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -24,19 +23,6 @@ import java.util.UUID;
 @Slf4j
 public class WebScreenshotUtils {
 
-    private static final WebDriver webDriver;
-
-    static {
-        final int DEFAULT_WIDTH = 1600;
-        final int DEFAULT_HEIGHT = 900;
-        webDriver = initChromeDriver(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    @PreDestroy
-    public void destroy() {
-        webDriver.quit();
-    }
-
     /**
      * 生成网页截图
      *
@@ -48,6 +34,8 @@ public class WebScreenshotUtils {
             log.error("网页URL不能为空");
             return null;
         }
+        // 每次截图新建独立 WebDriver，避免并发共享单例导致 session 失效
+        WebDriver driver = initChromeDriver(1600, 900);
         try {
             //创建临时目录
             String rootPath = System.getProperty("user.dir") + File.separator + "tmp" + File.separator
@@ -58,11 +46,11 @@ public class WebScreenshotUtils {
             //原始截图图片路径
             String imageSavePath = rootPath + File.separator + RandomUtil.randomNumbers(5) + IMAGE_SUFFIX;
             //访问网页
-            webDriver.get(webUrl);
+            driver.get(webUrl);
             //等待页面加载完成
-            waitForPageLoad(webDriver);
+            waitForPageLoad(driver);
             //截图
-            byte[] screenshotBytes = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES);
+            byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
             //保存原始图片
             saveImage(screenshotBytes, imageSavePath);
             log.info("原始截图保存成功，路径：{}", imageSavePath);
@@ -77,6 +65,13 @@ public class WebScreenshotUtils {
         } catch (Exception e) {
             log.error("网页截图失败，{}", webUrl, e);
             return null;
+        } finally {
+            // 无论成功失败都退出 driver，释放 Chromium 子进程
+            try {
+                driver.quit();
+            } catch (Exception quitEx) {
+                log.warn("退出 WebDriver 失败", quitEx);
+            }
         }
     }
 
