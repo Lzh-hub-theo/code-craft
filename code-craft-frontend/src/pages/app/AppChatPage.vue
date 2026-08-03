@@ -227,10 +227,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, nextTick, onUnmounted, computed} from 'vue'
+import {ref, onMounted, nextTick, computed, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {message} from 'ant-design-vue'
 import {useLoginUserStore} from '@/stores/loginUser'
+import {useChatStore, type ChatMessage} from '@/stores/chatStore'
 import {
   getAppVoById,
   deployApp as deployAppApi,
@@ -244,7 +245,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 import AppDetailModal from '@/components/AppDetailModal.vue'
 import DeploySuccessModal from '@/components/DeploySuccessModal.vue'
 import aiAvatar from '@/assets/aiAvatar.png'
-import {API_BASE_URL, getStaticPreviewUrl} from '@/config/env'
+import {getStaticPreviewUrl} from '@/config/env'
 import {VisualEditor, type ElementInfo} from '@/utils/visualEditor'
 
 import {
@@ -259,6 +260,7 @@ import {
 const route = useRoute()
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
+const chatStore = useChatStore()
 
 // 移动端对话/预览视图切换
 const mobileView = ref<'chat' | 'preview'>('chat')
@@ -267,24 +269,16 @@ const mobileView = ref<'chat' | 'preview'>('chat')
 const appInfo = ref<API.AppVO>()
 const appId = ref<any>()
 
-// 对话相关
-interface Message {
-  type: 'user' | 'ai'
-  content: string
-  loading?: boolean
-  createTime?: string
-}
-
-const messages = ref<Message[]>([])
+// 对话相关 —— 状态全部委托给 chatStore，保证组件卸载/挂载期间数据不丢
+const messages = computed<ChatMessage[]>(() => chatStore.getMessages(appId.value))
+const isGenerating = computed<boolean>(() => chatStore.isGenerating(appId.value))
 const userInput = ref('')
-const isGenerating = ref(false)
 const messagesContainer = ref<HTMLElement>()
 
-// 对话历史相关
+// 对话历史相关（加载更多）
 const loadingHistory = ref(false)
 const hasMoreHistory = ref(false)
 const lastCreateTime = ref<string>()
-const historyLoaded = ref(false)
 
 // 预览相关
 const previewUrl = ref('')
@@ -342,7 +336,7 @@ const loadChatHistory = async (isLoadMore = false) => {
       const chatHistories = res.data.data.records || []
       if (chatHistories.length > 0) {
         // 将对话历史转换为消息格式，并按时间正序排列（老消息在前）
-        const historyMessages: Message[] = chatHistories
+        const historyMessages: ChatMessage[] = chatHistories
           .map((chat) => ({
             type: (chat.messageType === 'user' ? 'user' : 'ai') as 'user' | 'ai',
             content: chat.message || '',
@@ -351,10 +345,10 @@ const loadChatHistory = async (isLoadMore = false) => {
           .reverse() // 反转数组，让老消息在前
         if (isLoadMore) {
           // 加载更多时，将历史消息添加到开头
-          messages.value.unshift(...historyMessages)
+          chatStore.prependMessages(appId.value, historyMessages)
         } else {
-          // 初始加载，直接设置消息列表
-          messages.value = historyMessages
+          // 初始加载，直接覆盖 store 中的消息列表
+          chatStore.setMessages(appId.value, historyMessages)
         }
         // 更新游标
         lastCreateTime.value = chatHistories[chatHistories.length - 1]?.createTime
@@ -363,7 +357,8 @@ const loadChatHistory = async (isLoadMore = false) => {
       } else {
         hasMoreHistory.value = false
       }
-      historyLoaded.value = true
+      // 标记该 appId 的历史已经加载过
+      chatStore.historyLoadedMap[String(appId.value)] = true
     }
   } catch (error) {
     console.error('加载对话历史失败：', error)
@@ -394,21 +389,33 @@ const fetchAppInfo = async () => {
     if (res.data.code === 0 && res.data.data) {
       appInfo.value = res.data.data
 
-      // 先加载对话历史
-      await loadChatHistory()
+      // 关键：如果 store 里已经有这个 appId 的消息（说明之前进入过该对话页，
+      // 或者离开时 SSE 还在流），不要用 DB 数据覆盖，否则会丢失正在累积的 AI 回复。
+      const existingMessages = chatStore.getMessages(id)
+      const alreadyLoadedHistory = chatStore.hasHistoryLoaded(id)
+      if (existingMessages.length === 0 && !alreadyLoadedHistory) {
+        // 首次进入且 store 中没有消息，从后端加载历史
+        await loadChatHistory()
+      } else if (existingMessages.length === 0 && alreadyLoadedHistory) {
+        // 已经加载过历史但当前没有消息（例如上一次进入时 AI 还在生成、被中断），
+        // 仍然再拉一次确保拿到最新数据
+        await loadChatHistory()
+      }
+      // 如果 store 中已有消息（可能是正在流式的中间状态），直接复用
+
       // 如果有至少2条对话记录，展示对应的网站
-      if (messages.value.length >= 2) {
+      if (chatStore.getMessages(id).length >= 2) {
         updatePreview()
       }
       // 检查是否需要自动发送初始提示词
-      // 只有在是自己的应用且没有对话历史时才自动发送
+      // 只有在是自己的应用、store 中没有任何消息、且没有正在进行的流时才自动发送
       if (
         appInfo.value.initPrompt &&
         isOwner.value &&
-        messages.value.length === 0 &&
-        historyLoaded.value
+        chatStore.getMessages(id).length === 0 &&
+        !chatStore.isGenerating(id)
       ) {
-        await sendInitialMessage(appInfo.value.initPrompt)
+        sendInitialMessage(appInfo.value.initPrompt)
       }
     } else {
       message.error('获取应用信息失败')
@@ -422,31 +429,15 @@ const fetchAppInfo = async () => {
 }
 
 // 发送初始消息
-const sendInitialMessage = async (prompt: string) => {
-  // 添加用户消息
-  messages.value.push({
-    type: 'user',
-    content: prompt,
-  })
-
-  // 添加AI消息占位符
-  const aiMessageIndex = messages.value.length
-  messages.value.push({
-    type: 'ai',
-    content: '',
-    loading: true,
-  })
-
-  await nextTick()
-  scrollToBottom()
-
-  // 开始生成
-  isGenerating.value = true
-  await generateCode(prompt, aiMessageIndex)
+const sendInitialMessage = (prompt: string) => {
+  // 委托给 chatStore：内部会添加 user + AI 占位消息，并启动 EventSource。
+  // 即便用户中途离开对话页，连接仍由 store 持有，回来时仍能看到持续追加的内容。
+  chatStore.startStream(appId.value, prompt)
+  nextTick(() => scrollToBottom())
 }
 
 // 发送消息
-const sendMessage = async () => {
+const sendMessage = () => {
   if (!userInput.value.trim() || isGenerating.value) {
     return
   }
@@ -465,12 +456,6 @@ const sendMessage = async () => {
     message += elementContext
   }
   userInput.value = ''
-  // 添加用户消息（包含元素信息）
-  messages.value.push({
-    type: 'user',
-    content: message,
-  })
-
   // 发送消息后，清除选中元素并退出编辑模式
   if (selectedElementInfo.value) {
     clearSelectedElement()
@@ -479,137 +464,24 @@ const sendMessage = async () => {
     }
   }
 
-  // 添加AI消息占位符
-  const aiMessageIndex = messages.value.length
-  messages.value.push({
-    type: 'ai',
-    content: '',
-    loading: true,
-  })
-
-  await nextTick()
-  scrollToBottom()
-
-  // 开始生成
-  isGenerating.value = true
-  await generateCode(message, aiMessageIndex)
+  // 委托给 chatStore
+  chatStore.startStream(appId.value, message)
+  nextTick(() => scrollToBottom())
 }
 
-// 生成代码 - 使用 EventSource 处理流式响应
-const generateCode = async (userMessage: string, aiMessageIndex: number) => {
-  let eventSource: EventSource | null = null
-  let streamCompleted = false
-
-  try {
-    // 获取 axios 配置的 baseURL
-    const baseURL = request.defaults.baseURL || API_BASE_URL
-
-    // 构建URL参数
-    const params = new URLSearchParams({
-      appId: appId.value || '',
-      message: userMessage,
-    })
-
-    const url = `${baseURL}/app/chat/gen/code?${params}`
-
-    // 创建 EventSource 连接
-    eventSource = new EventSource(url, {
-      withCredentials: true,
-    })
-
-    let fullContent = ''
-
-    // 处理接收到的消息
-    eventSource.onmessage = function (event) {
-      if (streamCompleted) return
-
-      try {
-        // 解析JSON包装的数据
-        const parsed = JSON.parse(event.data)
-        const content = parsed.d
-
-        // 拼接内容
-        if (content !== undefined && content !== null) {
-          fullContent += content
-          messages.value[aiMessageIndex].content = fullContent
-          messages.value[aiMessageIndex].loading = false
-          scrollToBottom()
-        }
-      } catch (error) {
-        console.error('解析消息失败:', error)
-        handleError(error, aiMessageIndex)
-      }
-    }
-
-    // 处理done事件
-    eventSource.addEventListener('done', function () {
-      if (streamCompleted) return
-
-      streamCompleted = true
-      isGenerating.value = false
-      eventSource?.close()
-
-      // 延迟更新预览，确保后端已完成处理
-      setTimeout(async () => {
-        await fetchAppInfo()
+// SSE 流式逻辑已下沉到 chatStore，本组件只负责渲染与触发。
+// 当流结束（isGenerating 由 true 变 false）时刷新预览，等后端落盘完成。
+watch(
+  () => chatStore.isGenerating(appId.value),
+  (newVal, oldVal) => {
+    if (oldVal && !newVal) {
+      // 延迟确保后端已完成文件落盘
+      setTimeout(() => {
         updatePreview()
       }, 1000)
-    })
-
-    // 处理business-error事件（后端限流等错误）
-    eventSource.addEventListener('business-error', function (event: MessageEvent) {
-      if (streamCompleted) return
-
-      try {
-        const errorData = JSON.parse(event.data)
-        console.error('SSE业务错误事件:', errorData)
-
-        // 显示具体的错误信息
-        const errorMessage = errorData.message || '生成过程中出现错误'
-        messages.value[aiMessageIndex].content = `❌ ${errorMessage}`
-        messages.value[aiMessageIndex].loading = false
-        message.error(errorMessage)
-
-        streamCompleted = true
-        isGenerating.value = false
-        eventSource?.close()
-      } catch (parseError) {
-        console.error('解析错误事件失败:', parseError, '原始数据:', event.data)
-        handleError(new Error('服务器返回错误'), aiMessageIndex)
-      }
-    })
-
-    // 处理错误
-    eventSource.onerror = function () {
-      if (streamCompleted || !isGenerating.value) return
-      // 检查是否是正常的连接关闭
-      if (eventSource?.readyState === EventSource.CONNECTING) {
-        streamCompleted = true
-        isGenerating.value = false
-        eventSource?.close()
-
-        setTimeout(async () => {
-          await fetchAppInfo()
-          updatePreview()
-        }, 1000)
-      } else {
-        handleError(new Error('SSE连接错误'), aiMessageIndex)
-      }
     }
-  } catch (error) {
-    console.error('创建 EventSource 失败：', error)
-    handleError(error, aiMessageIndex)
-  }
-}
-
-// 错误处理函数
-const handleError = (error: unknown, aiMessageIndex: number) => {
-  console.error('生成代码失败：', error)
-  messages.value[aiMessageIndex].content = '抱歉，生成过程中出现了错误，请重试。'
-  messages.value[aiMessageIndex].loading = false
-  message.error('生成失败，请重试')
-  isGenerating.value = false
-}
+  },
+)
 
 // 更新预览
 const updatePreview = () => {
@@ -732,6 +604,8 @@ const deleteApp = async () => {
   try {
     const res = await deleteAppApi({id: appInfo.value.id})
     if (res.data.code === 0) {
+      // 同步清理 chatStore 中该 appId 的消息、SSE 等资源
+      chatStore.clearApp(appInfo.value.id)
       message.success('删除成功')
       appDetailVisible.value = false
       router.push('/')
@@ -783,10 +657,9 @@ onMounted(() => {
   })
 })
 
-// 清理资源
-onUnmounted(() => {
-  // EventSource 会在组件卸载时自动清理
-})
+// 注意：不要在这里主动关闭 EventSource。
+// SSE 连接由 chatStore 持有，组件卸载时仍然保持打开，
+// 这样用户在 AI 生成中途离开对话页再回来时，仍能看到持续累积的内容。
 </script>
 
 <style scoped>
