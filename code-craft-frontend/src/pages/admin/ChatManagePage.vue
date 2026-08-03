@@ -198,8 +198,8 @@ const deleteMessage = async (id: number | undefined) => {
 
 <style scoped>
 #chatManagePage {
-  padding: 24px;
-  background: white;
+  padding: 36px;
+  background: transparent;
   margin-top: 16px;
 }
 
@@ -208,6 +208,7 @@ const deleteMessage = async (id: number | undefined) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--ink-2);
 }
 
 :deep(.ant-table-tbody > tr > td) {

@@ -104,14 +104,17 @@ const handleDelete = () => {
 
 .info-label {
   width: 80px;
-  color: #666;
-  font-size: 14px;
+  color: var(--ink-3);
+  font-family: 'Silkscreen', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   flex-shrink: 0;
 }
 
 .app-actions {
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--line-soft);
 }
 
 /* ===== 移动端 ===== */
@@ -126,7 +129,7 @@ const handleDelete = () => {
 
   .info-label {
     width: 72px;
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .app-actions :deep(.ant-space) {

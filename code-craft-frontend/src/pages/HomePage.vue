@@ -281,193 +281,109 @@ onMounted(() => {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background:
-    linear-gradient(180deg, #1a1a2e 0%, #16213e 8%, #1f1f3a 20%, #2a2a4a 100%),
-    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+  background: transparent;
   position: relative;
   overflow: hidden;
 }
 
-/* 科技感网格背景 */
-#homePage::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
-  background-size:
-    100px 100px,
-    100px 100px,
-    20px 20px,
-    20px 20px;
-  pointer-events: none;
-  animation: gridFloat 20s ease-in-out infinite;
-}
-
-/* 动态光效 */
-#homePage::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(
-      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(59, 130, 246, 0.12) 0%,
-      rgba(139, 92, 246, 0.08) 40%,
-      transparent 80%
-    ),
-    linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.06) 50%, transparent 70%),
-    linear-gradient(-45deg, transparent 30%, rgba(139, 92, 246, 0.06) 50%, transparent 70%);
-  pointer-events: none;
-  animation: lightPulse 8s ease-in-out infinite alternate;
-}
-
-@keyframes gridFloat {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(5px, 5px);
-  }
-}
-
-@keyframes lightPulse {
-  0% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0.7;
-  }
-}
+/* 纯白底 + 极淡像素网格(继承自 #app 的全局底纹)，无需额外背景层 */
 
 .container {
-  max-width: 1200px;
+  max-width: var(--maxw);
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 36px;
   position: relative;
   z-index: 2;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* 移除居中光束效果 */
-
-/* 英雄区域 */
+/* ============ 英雄区域 ============ */
 .hero-section {
   text-align: center;
-  padding: 80px 0 60px;
-  margin-bottom: 28px;
-  color: #e0e0e0;
+  padding: 96px 0 64px;
+  margin-bottom: 32px;
   position: relative;
   overflow: hidden;
 }
 
 .hero-section::before {
+  /* 顶部钢青像素分隔点（居中） */
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(ellipse 800px 400px at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%),
-    linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.08) 50%, transparent 70%),
-    linear-gradient(-45deg, transparent 30%, rgba(16, 185, 129, 0.06) 50%, transparent 70%);
-  animation: heroGlow 10s ease-in-out infinite alternate;
-}
-
-@keyframes heroGlow {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--steel);
 }
 
 .hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  margin: 0 0 20px;
-  line-height: 1.2;
-  background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #D4AF37 50%, #F6E4B5 75%, #B38728 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -1px;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-weight: 300;
+  font-size: clamp(48px, 8vw, 104px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  color: var(--ink);
   position: relative;
   z-index: 2;
-  animation: titleShimmer 3s ease-in-out infinite;
+  font-variation-settings: 'opsz' 144;
 }
 
-@keyframes titleShimmer {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+.hero-title::first-line {
+  font-style: italic;
 }
 
 .hero-description {
-  font-size: 20px;
-  margin: 0;
-  opacity: 0.8;
-  color: #a0a0a0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 2vw, 22px);
+  margin: 0 auto;
+  color: var(--ink-3);
   position: relative;
   z-index: 2;
+  max-width: 48ch;
 }
 
-/* 输入区域 */
+/* ============ 输入区域 ============ */
 .input-section {
   position: relative;
   margin: 0 auto 24px;
-  max-width: 800px;
+  max-width: 820px;
 }
 
 .prompt-input {
-  border-radius: 16px;
-  border: none;
+  border-radius: 0;
+  border: 1px solid var(--line);
   font-size: 16px;
-  padding: 20px 60px 20px 20px;
-  background: rgba(22, 33, 62, 0.95);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  padding: 22px 64px 22px 22px;
+  background: var(--bg);
+  box-shadow: 0 10px 30px -18px rgba(10, 10, 10, 0.18);
+  color: var(--ink);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.prompt-input:hover {
+  border-color: var(--ink-4);
 }
 
 .prompt-input:focus {
-  background: rgba(22, 33, 62, 1);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
+  background: var(--bg);
+  border-color: var(--steel);
+  box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.12);
+  transform: translateY(-1px);
 }
 
 .prompt-input::placeholder {
-  color: #6a6a8a;
+  color: var(--ink-4);
+  font-style: italic;
 }
 
 .input-actions {
@@ -479,68 +395,96 @@ onMounted(() => {
   align-items: center;
 }
 
-/* 快捷按钮 */
+/* 发送按钮：墨色方块 */
+.input-actions :deep(.ant-btn-primary) {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 0;
+  font-size: 18px;
+}
+
+/* ============ 快捷按钮 ============ */
 .quick-actions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
-  margin-bottom: 60px;
+  margin-bottom: 80px;
   flex-wrap: wrap;
 }
 
 .quick-actions .ant-btn {
-  border-radius: 25px;
-  padding: 8px 20px;
+  border-radius: 0;
+  padding: 10px 20px;
   height: auto;
-  background: rgba(22, 33, 62, 0.8);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #e0e0e0;
-  backdrop-filter: blur(15px);
-  transition: all 0.3s;
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 14px;
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
   position: relative;
-  overflow: hidden;
 }
 
 .quick-actions .ant-btn::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.quick-actions .ant-btn:hover::before {
-  left: 100%;
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+  display: inline-block;
+  margin-right: 9px;
+  vertical-align: middle;
+  transition: background 0.2s;
 }
 
 .quick-actions .ant-btn:hover {
-  background: rgba(212, 175, 55, 0.3);
-  border-color: rgba(212, 175, 55, 0.6);
-  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 24px -8px rgba(10, 10, 10, 0.22);
 }
 
-/* 区域标题 */
+.quick-actions .ant-btn:hover::before {
+  background: var(--bg);
+}
+
+/* ============ 区段 ============ */
 .section {
-  margin-bottom: 60px;
+  margin-bottom: 96px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line-soft);
 }
 
 .section-title {
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 32px;
-  color: #e0e0e0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-weight: 300;
+  font-size: clamp(32px, 4.5vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 36px;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.section-title::before {
+  content: '§';
+  font-family: 'Silkscreen', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--steel);
+  align-self: center;
 }
 
 /* 我的作品网格 */
 .app-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  gap: 20px;
   margin-bottom: 32px;
 }
 
@@ -548,7 +492,7 @@ onMounted(() => {
 .featured-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  gap: 20px;
   margin-bottom: 32px;
 }
 
@@ -556,54 +500,24 @@ onMounted(() => {
 .pagination-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
-}
-
-/* 分页器样式与应用管理一致 */
-:deep(.ant-pagination) {
-  color: #c0c0c0;
-}
-
-:deep(.ant-pagination-item) {
-  background: #16213e;
-  border-color: #2a2a4a;
-}
-
-:deep(.ant-pagination-item a) {
-  color: #c0c0c0;
-}
-
-:deep(.ant-pagination-item-active) {
-  background: #2a2a4a;
-  border-color: #D4AF37;
-}
-
-:deep(.ant-pagination-item-active a) {
-  color: #D4AF37;
-}
-
-:deep(.ant-pagination-item-active:hover) {
-  border-color: #D4AF37 !important;
-}
-
-:deep(.ant-pagination-item-active:hover a) {
-  color: #D4AF37 !important;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-soft);
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .container {
-    padding: 12px;
+    padding: 0 18px;
   }
 
   .hero-section {
-    padding: 32px 0 28px;
+    padding: 48px 0 36px;
     margin-bottom: 16px;
   }
 
-  .hero-title {
-    font-size: 30px;
-    letter-spacing: 0;
+  .hero-section::before {
+    top: 36px;
   }
 
   .hero-description {
@@ -617,8 +531,7 @@ onMounted(() => {
 
   .prompt-input {
     font-size: 16px;
-    padding: 16px 56px 16px 14px;
-    border-radius: 14px;
+    padding: 16px 56px 16px 16px;
   }
 
   .input-actions {
@@ -626,39 +539,38 @@ onMounted(() => {
     right: 10px;
   }
 
-  .input-actions .ant-btn {
+  .input-actions :deep(.ant-btn-primary) {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    padding: 0;
+    font-size: 16px;
   }
 
   /* 快捷按钮：移动端两列网格，便于触摸 */
   .quick-actions {
     gap: 10px;
-    margin-bottom: 32px;
+    margin-bottom: 48px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
 
   .quick-actions .ant-btn {
-    border-radius: 12px;
     padding: 10px 12px;
-    height: auto;
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    justify-content: flex-start;
   }
 
   /* 区域标题与间距 */
   .section {
-    margin-bottom: 32px;
+    margin-bottom: 56px;
+    padding-top: 32px;
   }
 
   .section-title {
-    font-size: 22px;
-    margin-bottom: 16px;
+    font-size: 26px;
+    margin-bottom: 20px;
   }
 
   .app-grid,
@@ -669,16 +581,13 @@ onMounted(() => {
   }
 
   .pagination-wrapper {
-    margin-top: 20px;
+    margin-top: 24px;
+    padding-top: 16px;
   }
 }
 
 /* 超小屏：快捷按钮单列 */
 @media (max-width: 380px) {
-  .hero-title {
-    font-size: 26px;
-  }
-
   .quick-actions {
     grid-template-columns: 1fr;
   }

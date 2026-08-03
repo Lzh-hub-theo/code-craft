@@ -26,14 +26,18 @@ const isFullScreenRoute = computed(() => route.path.startsWith('/app/chat'))
 
 <style scoped>
 .basic-layout {
-  background: none;
+  background: transparent;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 .main-content {
   width: 100%;
   padding: 0;
-  background: none;
+  background: transparent;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 </style>

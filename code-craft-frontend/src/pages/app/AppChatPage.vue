@@ -664,11 +664,13 @@ onMounted(() => {
 
 <style scoped>
 #appChatPage {
-  height: 100vh;
+  /* PC 端：减去顶部导航栏 64px，使整页一屏显示 */
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: #1a1a2e;
+  background: transparent;
+  overflow: hidden;
 }
 
 /* 移动端视图切换默认隐藏（仅移动端显示） */
@@ -681,9 +683,10 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: #16213e;
-  border-radius: 8px;
+  padding: 14px 20px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
   margin-bottom: 8px;
 }
 
@@ -699,9 +702,10 @@ onMounted(() => {
 
 .app-name {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #e0e0e0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
 }
 
 .header-right {
@@ -723,15 +727,17 @@ onMounted(() => {
   flex: 2;
   display: flex;
   flex-direction: column;
-  background: #16213e;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: 0 2px 12px -6px rgba(10, 10, 10, 0.1);
   overflow: hidden;
 }
 
 .messages-container {
-  flex: 0.9;
-  padding: 16px;
+  flex: 1;
+  min-height: 0;
+  padding: 20px;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
@@ -742,17 +748,15 @@ onMounted(() => {
 }
 
 .messages-container::-webkit-scrollbar-track {
-  background: #1a1a2e;
-  border-radius: 4px;
+  background: var(--surface);
 }
 
 .messages-container::-webkit-scrollbar-thumb {
-  background: #3a3a5a;
-  border-radius: 4px;
+  background: var(--ink-4);
 }
 
 .messages-container::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37;
+  background: var(--steel);
 }
 
 .message-item {
@@ -776,21 +780,21 @@ onMounted(() => {
 .message-content {
   max-width: 70%;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: 0;
   line-height: 1.5;
   word-wrap: break-word;
 }
 
 .user-message .message-content {
-  background: #1a1a2e;
-  color: white;
+  background: var(--ink);
+  color: var(--bg);
   border: none;
 }
 
 .ai-message .message-content {
-  background: #1a1a2e;
-  color: #e0e0e0;
-  border: none;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
   overflow-x: auto;
 }
 
@@ -800,17 +804,15 @@ onMounted(() => {
 }
 
 .ai-message .message-content::-webkit-scrollbar-track {
-  background: #1a1a2e;
-  border-radius: 4px;
+  background: var(--surface);
 }
 
 .ai-message .message-content::-webkit-scrollbar-thumb {
-  background: #3a3a5a;
-  border-radius: 4px;
+  background: var(--ink-4);
 }
 
 .ai-message .message-content::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37;
+  background: var(--steel);
 }
 
 .message-avatar {
@@ -821,7 +823,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #a0a0a0;
+  color: var(--ink-3);
 }
 
 /* 加载更多按钮 */
@@ -834,7 +836,8 @@ onMounted(() => {
 /* 输入区域 */
 .input-container {
   padding: 16px;
-  background: #1a1a2e;
+  background: var(--bg);
+  border-top: 1px solid var(--line-soft);
 }
 
 .input-wrapper {
@@ -844,15 +847,12 @@ onMounted(() => {
 .input-wrapper .ant-input,
 .input-wrapper .ant-input-affix-wrapper {
   padding-right: 50px;
-  background: #1a1a2e !important;
-  color: #e0e0e0 !important;
-  border-color: #3a3a5a !important;
 }
 
 .input-wrapper .ant-input:focus,
 .input-wrapper .ant-input-affix-wrapper-focused {
-  border-color: #D4AF37 !important;
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+  border-color: var(--steel) !important;
+  box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.18);
 }
 
 .input-actions {
@@ -866,9 +866,10 @@ onMounted(() => {
   flex: 3;
   display: flex;
   flex-direction: column;
-  background: #16213e;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: 0 2px 12px -6px rgba(10, 10, 10, 0.1);
   overflow: hidden;
 }
 
@@ -876,15 +877,16 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #2a2a4a;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .preview-header h3 {
   margin: 0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 16px;
-  font-weight: 600;
-  color: #e0e0e0;
+  font-weight: 400;
+  color: var(--ink);
 }
 
 .preview-actions {
@@ -893,11 +895,11 @@ onMounted(() => {
 }
 
 .preview-actions :deep(.ant-btn-link) {
-  color: #D4AF37 !important;
+  color: var(--steel);
 }
 
 .preview-actions :deep(.ant-btn-link:hover) {
-  color: #E5C158 !important;
+  color: var(--steel-d);
 }
 
 .preview-content {
@@ -912,12 +914,13 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #a0a0a0;
+  color: var(--ink-3);
 }
 
 .placeholder-icon {
   font-size: 48px;
   margin-bottom: 16px;
+  filter: grayscale(1) opacity(0.5);
 }
 
 .preview-loading {
@@ -926,7 +929,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #a0a0a0;
+  color: var(--ink-3);
 }
 
 .preview-loading p {
@@ -1085,42 +1088,42 @@ onMounted(() => {
   }
 
   .element-tag {
-    font-family: 'Monaco', 'Menlo', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
     font-weight: 600;
-    color: #007bff;
+    color: var(--steel);
   }
 
   .element-id {
-    color: #28a745;
+    color: var(--ink-2);
     margin-left: 4px;
   }
 
   .element-class {
-    color: #ffc107;
+    color: var(--ink-3);
     margin-left: 4px;
   }
 
   .element-selector-code {
-    font-family: 'Monaco', 'Menlo', monospace;
-    background: #f6f8fa;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--recess);
     padding: 2px 4px;
-    border-radius: 3px;
+    border-radius: 0;
     font-size: 12px;
-    color: #d73a49;
-    border: 1px solid #e1e4e8;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
   }
 
   /* 编辑模式按钮样式 */
   .edit-mode-active {
-    background-color: #52c41a !important;
-    border-color: #52c41a !important;
-    color: white !important;
+    background-color: var(--steel) !important;
+    border-color: var(--steel) !important;
+    color: var(--bg) !important;
   }
 
   .edit-mode-active:hover {
-    background-color: #73d13d !important;
-    border-color: #73d13d !important;
+    background-color: var(--steel-d) !important;
+    border-color: var(--steel-d) !important;
   }
 }
 </style>

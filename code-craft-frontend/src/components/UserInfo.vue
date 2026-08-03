@@ -28,7 +28,8 @@ withDefaults(defineProps<Props>(), {
 }
 
 .user-name {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 14px;
-  color: #a0a0a0;
+  color: var(--ink-2);
 }
 </style>

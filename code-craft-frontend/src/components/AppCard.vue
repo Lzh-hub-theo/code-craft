@@ -56,26 +56,27 @@ const handleViewWork = () => {
 
 <style scoped>
 .app-card {
-  background: rgba(22, 33, 62, 0.95);
-  border-radius: 16px;
+  background: var(--bg);
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid #2a2a4a;
+  box-shadow: none;
+  border: 1px solid var(--line);
   transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   cursor: pointer;
 }
 
 .app-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -8px rgba(10, 10, 10, 0.22);
+  border-color: var(--ink);
 }
 
 .app-preview {
   height: 180px;
-  background: #1a1a2e;
+  background: var(--recess);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,12 +99,12 @@ const handleViewWork = () => {
 }
 
 .placeholder-text {
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #D4AF37 50%, #F6E4B5 75%, #B38728 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: 'Silkscreen', monospace;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .app-overlay {
@@ -112,12 +113,12 @@ const handleViewWork = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s ease;
 }
 
 .app-card:hover .app-overlay {
@@ -141,18 +142,20 @@ const handleViewWork = () => {
 }
 
 .app-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 4px;
-  color: #e0e0e0;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .app-author {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 14px;
-  color: #a0a0a0;
+  color: var(--ink-3);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -162,12 +165,14 @@ const handleViewWork = () => {
 /* ===== 移动端 ===== */
 @media (max-width: 768px) {
   .app-card {
-    border-radius: 12px;
+    border-radius: 0;
   }
 
   .app-card:hover {
     /* 移动端无 hover，去除位移避免误触抖动 */
     transform: none;
+    box-shadow: none;
+    border-color: var(--line);
   }
 
   .app-preview {
@@ -175,14 +180,14 @@ const handleViewWork = () => {
   }
 
   .placeholder-text {
-    font-size: 28px;
+    font-size: 22px;
   }
 
   /* 移动端无 hover，操作按钮常显 */
   .app-overlay {
     opacity: 1;
     /* 底部渐变遮罩，避免遮挡预览主体 */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+    background: linear-gradient(to top, var(--bg) 0%, rgba(255, 255, 255, 0.6) 60%, transparent 100%);
     align-items: flex-end;
     justify-content: flex-start;
     padding: 10px;
@@ -192,7 +197,7 @@ const handleViewWork = () => {
     height: 30px;
     padding: 0 12px;
     font-size: 13px;
-    border-radius: 8px;
+    border-radius: 0;
   }
 
   .app-info {

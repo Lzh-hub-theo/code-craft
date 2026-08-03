@@ -192,7 +192,7 @@ export class VisualEditor {
           style.id = 'edit-mode-styles';
           style.textContent = \`
             .edit-hover {
-              outline: 2px dashed #1890ff !important;
+              outline: 2px dashed #475569 !important;
               outline-offset: 2px !important;
               cursor: crosshair !important;
               transition: outline 0.2s ease !important;
@@ -205,12 +205,12 @@ export class VisualEditor {
               left: -4px !important;
               right: -4px !important;
               bottom: -4px !important;
-              background: rgba(24, 144, 255, 0.02) !important;
+              background: rgba(71, 85, 105, 0.04) !important;
               pointer-events: none !important;
               z-index: -1 !important;
             }
             .edit-selected {
-              outline: 3px solid #52c41a !important;
+              outline: 3px solid #334155 !important;
               outline-offset: 2px !important;
               cursor: default !important;
               position: relative !important;
@@ -222,7 +222,7 @@ export class VisualEditor {
               left: -4px !important;
               right: -4px !important;
               bottom: -4px !important;
-              background: rgba(82, 196, 26, 0.03) !important;
+              background: rgba(51, 65, 85, 0.05) !important;
               pointer-events: none !important;
               z-index: -1 !important;
             }

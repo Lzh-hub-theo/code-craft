@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>净白像素 · 风格参考</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#FFFFFF;              /* 纯净白 · 主底 */
+    --surface:#FAFAFB;        /* 微凹白 · 卡片 */
+    --recess:#F4F5F7;         /* 凹陷灰白 */
+    --line:#E5E7EB;           /* 发丝线 */
+    --line-soft:#EEF0F3;      /* 淡发丝 */
+    --ink:#0A0A0A;            /* 浓墨 */
+    --ink-2:#374151;           /* 次墨(冷灰) */
+    --ink-3:#6B7280;           /* 灰墨 */
+    --ink-4:#9CA3AF;           /* 弱灰 */
+    --steel:#475569;           /* 钢灰青 · 单点缀色 */
+    --steel-d:#334155;         /* 深钢 */
+    --maxw:1180px;
+    --g:8px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Fraunces","Noto Serif SC",serif;
+    font-weight:400;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* 极淡像素网格 — 中心可见,边缘消散 */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:var(--g) var(--g);
+    opacity:.5;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 30%, #000 18%, transparent 70%);
+            mask-image:radial-gradient(ellipse at 50% 30%, #000 18%, transparent 70%);
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 36px;position:relative;z-index:1}
+
+  /* ---------- 字体 ---------- */
+  .serif{font-family:"Fraunces","Noto Serif SC",serif}
+  .cn{font-family:"Noto Serif SC",serif}
+  .pix{font-family:"Silkscreen",monospace;letter-spacing:.04em}
+  .mono{font-family:"JetBrains Mono",monospace}
+
+  /* 像素装饰构件 */
+  .sq{display:inline-block;width:6px;height:6px;background:var(--ink);vertical-align:middle}
+  .sq.steel{background:var(--steel)}
+  .sq.soft{background:var(--ink-3)}
+  .sq.line{background:var(--line)}
+
+  /* 像素虚线:一行小点 */
+  .pix-rule{display:flex;gap:3px;flex-wrap:nowrap}
+  .pix-rule i{width:2px;height:2px;background:var(--ink-3);display:block}
+  .pix-rule i.s{background:var(--steel)}
+
+  /* 角标:像素小方框 */
+  .corner{position:absolute;width:14px;height:14px}
+  .corner::before,.corner::after{content:"";position:absolute;background:var(--ink)}
+  .corner.tl::before{top:0;left:0;width:14px;height:1px}
+  .corner.tl::after{top:0;left:0;width:1px;height:14px}
+  .corner.tr::before{top:0;right:0;width:14px;height:1px}
+  .corner.tr::after{top:0;right:0;width:1px;height:14px}
+  .corner.bl::before{bottom:0;left:0;width:14px;height:1px}
+  .corner.bl::after{bottom:0;left:0;width:1px;height:14px}
+  .corner.br::before{bottom:0;right:0;width:14px;height:1px}
+  .corner.br::after{bottom:0;right:0;width:1px;height:14px}
+
+  /* 标签 */
+  .label{
+    font-family:"Silkscreen",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-2);
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .label::before{content:"";width:6px;height:6px;background:var(--ink);display:inline-block}
+  .label.steel::before{background:var(--steel)}
+  .label.ghost{color:var(--ink-3)}
+  .label.ghost::before{background:var(--ink-4)}
+
+  h1,h2,h3{font-weight:400;line-height:1.05;letter-spacing:-.015em}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- 顶栏 ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo .mark{
+    width:14px;height:14px;border:1px solid var(--ink);position:relative;display:inline-block;
+  }
+  .logo .mark::after{
+    content:"";position:absolute;inset:3px;background:var(--ink);
+  }
+  .logo .name{font-family:"Fraunces",serif;font-weight:500;font-size:18px;font-style:italic;letter-spacing:-.01em}
+  .logo .en{font-family:"Silkscreen",monospace;font-size:10px;letter-spacing:.18em;color:var(--ink-3);margin-left:4px;text-transform:uppercase}
+  nav ul{list-style:none;display:flex;gap:34px}
+  nav a{
+    font-family:"Fraunces",serif;font-size:15px;font-weight:400;
+    display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);
+    transition:color .2s;
+  }
+  nav a .num{font-family:"Silkscreen",monospace;font-size:10px;color:var(--ink-4);letter-spacing:.08em}
+  nav a:hover{color:var(--ink)}
+  nav a:hover .num{color:var(--steel)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:108px 0 80px;position:relative}
+  .hero-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:64px}
+  .hero-meta .right{text-align:right;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-3);line-height:1.6}
+  .hero-meta .right b{color:var(--ink-2);font-weight:400}
+
+  .hero-title{position:relative;max-width:none}
+  .hero-title .pre{display:block;font-family:"Fraunces",serif;font-style:italic;font-weight:300;color:var(--ink-3);font-size:20px;margin-bottom:18px}
+  .hero-title .pre .sq{margin-right:10px}
+  .hero-title h1{
+    font-family:"Fraunces",serif;font-weight:300;
+    font-size:clamp(56px,9.5vw,128px);line-height:1;letter-spacing:-.025em;
+    font-variation-settings:"opsz" 144;
+  }
+  .hero-title h1 em{font-style:italic;font-weight:400;color:var(--ink)}
+  .hero-title h1 .steel{color:var(--steel);font-style:italic;font-weight:400}
+  .hero-title .en{
+    display:block;margin-top:28px;
+    font-family:"Silkscreen",monospace;font-size:clamp(11px,1.4vw,14px);
+    letter-spacing:.24em;color:var(--ink-3);text-transform:uppercase;
+  }
+  .hero-sub{margin-top:36px;max-width:52ch;font-size:17px;color:var(--ink-2);line-height:1.8}
+  .hero-sub em{font-style:italic;color:var(--ink)}
+
+  .hero-actions{margin-top:40px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .btn{
+    font-family:"Fraunces",serif;font-size:15px;font-weight:500;
+    display:inline-flex;align-items:center;gap:11px;padding:13px 24px;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);
+    transition:all .22s cubic-bezier(.2,.7,.2,1);position:relative;
+  }
+  .btn::before{content:"";width:6px;height:6px;background:var(--ink);display:inline-block}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px -8px rgba(10,10,10,.22)}
+  .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .btn.primary::before{background:var(--bg)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 12px 28px -8px rgba(10,10,10,.35)}
+  .btn .arr{display:inline-block;width:5px;height:5px;border-right:1px solid currentColor;border-top:1px solid currentColor;transform:rotate(45deg);margin-left:2px}
+
+  /* hero 装饰:右下角像素矩阵 */
+  .hero-matrix{
+    position:absolute;right:36px;bottom:40px;
+    display:grid;grid-template-columns:repeat(8,8px);gap:4px;pointer-events:none;
+  }
+  .hero-matrix i{width:8px;height:8px;background:var(--line-soft);display:block}
+  .hero-matrix i.ink{background:var(--ink)}
+  .hero-matrix i.steel{background:var(--steel)}
+  .hero-matrix i.soft{background:var(--ink-4)}
+
+  .scrollcue{display:flex;align-items:center;gap:12px;margin-top:80px;color:var(--ink-3);
+    font-family:"Silkscreen",monospace;font-size:11px;letter-spacing:.2em}
+  .scrollcue .track{display:flex;gap:3px}
+  .scrollcue .track i{width:3px;height:3px;background:var(--ink-4);display:block;animation:fall 1.6s steps(1) infinite}
+  .scrollcue .track i:nth-child(2){animation-delay:.2s}
+  .scrollcue .track i:nth-child(3){animation-delay:.4s}
+  @keyframes fall{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(4px);opacity:1;background:var(--steel)}}
+
+  /* ---------- 区段 ---------- */
+  section{position:relative}
+  .sec{padding:112px 0;border-top:1px solid var(--line-soft)}
+  .sec-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:64px}
+  .sec-head .num{font-family:"Silkscreen",monospace;font-size:12px;color:var(--ink-3);letter-spacing:.14em;
+    display:inline-flex;align-items:center;gap:8px;text-transform:uppercase}
+  .sec-head .num::before{content:"";width:5px;height:5px;background:var(--steel);display:inline-block}
+  .sec-head h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(40px,6vw,76px);line-height:1;margin-top:18px;letter-spacing:-.02em}
+  .sec-head h2 em{font-style:italic;color:var(--ink-3);font-weight:300}
+  .sec-head h2 .steel{color:var(--steel);font-style:italic}
+  .sec-head .right{color:var(--ink-2);font-family:"Fraunces",serif;font-size:17px;line-height:1.7;font-style:italic;font-weight:300;max-width:38ch;justify-self:end}
+  .sec-head .right .mono{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-3);display:block;margin-top:8px}
+
+  /* ---------- 原则 ---------- */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .principle{
+    padding:44px 32px 36px;border-right:1px solid var(--line);position:relative;
+    transition:background .3s;
+  }
+  .principle:last-child{border-right:none}
+  .principle:hover{background:var(--surface)}
+  .principle .num{
+    font-family:"Silkscreen",monospace;font-size:14px;letter-spacing:.06em;color:var(--steel);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .principle .num::before{content:"";width:6px;height:6px;background:var(--steel);display:inline-block}
+  .principle h3{font-family:"Fraunces",serif;font-weight:400;font-size:28px;line-height:1.2;margin-top:22px;letter-spacing:-.015em}
+  .principle h3 em{font-style:italic;color:var(--ink-3);font-size:15px;font-weight:300;display:block;margin-top:6px;font-family:"Fraunces",serif}
+  .principle p{margin-top:18px;color:var(--ink-2);font-size:15px;line-height:1.75}
+  .principle .pix-rule{margin-top:24px}
+
+  /* ---------- 字体展示 ---------- */
+  .type-spec{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--line)}
+  .type-row{display:grid;grid-template-columns:120px 1fr 80px;border-bottom:1px solid var(--line);align-items:center}
+  .type-row:last-child{border-bottom:none}
+  .type-row .k{padding:24px 24px;font-family:"Silkscreen",monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;border-right:1px solid var(--line);align-self:stretch;display:flex;align-items:center;gap:8px}
+  .type-row .k::before{content:"";width:4px;height:4px;background:var(--steel);display:inline-block}
+  .type-row .v{padding:24px 28px;border-right:1px solid var(--line);overflow:hidden}
+  .type-row .meta{padding:24px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);text-align:right;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;gap:6px}
+  .type-row .meta .sq{margin-left:0}
+
+  .spec-display{font-family:"Fraunces",serif;font-size:48px;font-weight:300;letter-spacing:-.02em;line-height:1;font-style:italic}
+  .spec-h{font-family:"Fraunces",serif;font-size:30px;font-weight:400;letter-spacing:-.01em}
+  .spec-cn{font-family:"Noto Serif SC",serif;font-size:22px;font-weight:400}
+  .spec-body{font-family:"Fraunces",serif;font-size:16px;color:var(--ink-2)}
+  .spec-pix{font-family:"Silkscreen",monospace;font-size:14px;letter-spacing:.1em;color:var(--ink-2)}
+  .spec-mono{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink-2)}
+
+  /* ---------- 色彩 token ---------- */
+  .tokens{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .token{
+    background:var(--bg);border:1px solid var(--line);padding:0;
+    display:flex;flex-direction:column;overflow:hidden;transition:transform .25s,box-shadow .25s;
+  }
+  .token:hover{transform:translateY(-3px);box-shadow:0 8px 24px -10px rgba(10,10,10,.12)}
+  .token .swatch{height:120px;position:relative;border-bottom:1px solid var(--line)}
+  .token .swatch .corner{z-index:1}
+  .token .info{padding:18px 20px 20px}
+  .token .name{font-family:"Fraunces",serif;font-size:17px;font-weight:500;font-style:italic}
+  .token .role{font-family:"Silkscreen",monospace;font-size:10px;letter-spacing:.16em;color:var(--ink-3);text-transform:uppercase;margin-top:4px;display:block}
+  .token .hex{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2);margin-top:10px;display:flex;align-items:center;gap:6px}
+  .token .hex::before{content:"";width:6px;height:6px;background:currentColor;display:inline-block}
+
+  /* ---------- 按钮系统 ---------- */
+  .buttons{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--line)}
+  .btn-col{padding:40px 36px}
+  .btn-col + .btn-col{border-left:1px solid var(--line)}
+  .btn-col h3{font-family:"Fraunces",serif;font-weight:400;font-size:22px;font-style:italic;margin-bottom:4px}
+  .btn-col .sub{font-family:"Silkscreen",monospace;font-size:10px;letter-spacing:.16em;color:var(--ink-3);text-transform:uppercase;margin-bottom:24px;display:block}
+  .btn-col .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .btn-col .row:last-child{border-bottom:none}
+  .btn-col .row .lbl{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);width:80px;flex:none}
+  .btn-mini{
+    font-family:"Fraunces",serif;font-size:13px;font-weight:500;padding:8px 16px;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);
+    display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s;
+  }
+  .btn-mini::before{content:"";width:4px;height:4px;background:var(--ink);display:inline-block}
+  .btn-mini:hover{transform:translateY(-2px);box-shadow:0 8px 18px -6px rgba(10,10,10,.22)}
+  .btn-mini.primary{background:var(--ink);color:var(--bg)}
+  .btn-mini.primary::before{background:var(--bg)}
+  .btn-mini.primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px -6px rgba(10,10,10,.4)}
+  .btn-mini.steel{border-color:var(--steel);color:var(--steel)}
+  .btn-mini.steel::before{background:var(--steel)}
+  .btn-mini.steel:hover{transform:translateY(-2px);box-shadow:0 8px 18px -6px rgba(71,85,105,.3)}
+  .btn-mini.disabled{opacity:.4;cursor:not-allowed;border-color:var(--ink-4);color:var(--ink-3)}
+  .btn-mini.disabled::before{background:var(--ink-4)}
+  .btn-mini.disabled:hover{transform:none;box-shadow:none}
+
+  /* ---------- 卡片示例 ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{
+    background:var(--bg);border:1px solid var(--line);
+    padding:32px 28px 26px;display:flex;flex-direction:column;gap:18px;
+    transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
+    position:relative;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 32px -14px rgba(10,10,10,.14);border-color:var(--ink)}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .card .no{font-family:"Silkscreen",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-2);
+    display:inline-flex;align-items:center;gap:7px}
+  .card .no::before{content:"";width:5px;height:5px;background:var(--steel);display:inline-block}
+  .card .date{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3)}
+  .card h3{font-family:"Fraunces",serif;font-weight:400;font-size:24px;line-height:1.25;letter-spacing:-.01em}
+  .card h3 em{font-style:italic;color:var(--ink-3);font-size:14px;font-weight:300;display:block;margin-top:4px;font-family:"Fraunces",serif}
+  .card p{font-size:15px;color:var(--ink-2);line-height:1.75}
+  .card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .card .tag{font-family:"Silkscreen",monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .card .more{font-family:"Fraunces",serif;font-size:14px;font-style:italic;color:var(--ink);display:inline-flex;align-items:center;gap:7px;transition:color .2s}
+  .card .more::before{content:"";width:5px;height:5px;background:var(--ink);display:inline-block;transition:background .2s}
+  .card:hover .more::before{background:var(--steel)}
+
+  /* ---------- 引言 ---------- */
+  .quote{padding:96px 0;border-top:1px solid var(--line-soft);background:var(--surface);position:relative}
+  .quote::before,.quote::after{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:48px;height:4px;background:
+      repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 0 5px);
+  }
+  .quote::before{top:0}.quote::after{bottom:0}
+  .quote .inner{text-align:center;max-width:34ch;margin:0 auto}
+  .quote .qmark{font-family:"Fraunces",serif;font-size:72px;line-height:.4;color:var(--steel);display:block;margin-bottom:20px;font-style:italic;font-weight:300}
+  .quote blockquote{font-family:"Fraunces",serif;font-weight:300;font-style:italic;font-size:clamp(24px,3.2vw,34px);line-height:1.45;color:var(--ink);letter-spacing:-.01em}
+  .quote cite{display:block;margin-top:24px;font-family:"Silkscreen",monospace;font-size:11px;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase;font-style:normal}
+
+  /* ---------- 页脚 ---------- */
+  footer{padding:96px 0 40px;position:relative;border-top:1px solid var(--line-soft)}
+  .foot-top{display:grid;grid-template-columns:1.4fr .6fr .6fr;gap:48px;align-items:end}
+  .foot-top .big{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(38px,5.6vw,72px);line-height:1;letter-spacing:-.025em;font-style:italic}
+  .foot-top .big .sq{width:14px;height:14px;margin:0 4px;vertical-align:baseline}
+  .foot-top .big small{display:block;font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:17px;color:var(--ink-3);margin-top:18px;letter-spacing:0}
+  .foot-col h4{font-family:"Silkscreen",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .foot-col h4::before{content:"";width:5px;height:5px;background:var(--steel);display:inline-block}
+  .foot-col ul{list-style:none}
+  .foot-col li{margin-bottom:10px}
+  .foot-col a{font-family:"Fraunces",serif;font-size:15px;display:inline-flex;align-items:center;gap:9px;color:var(--ink-2);transition:color .2s}
+  .foot-col a::before{content:"";width:3px;height:3px;background:var(--ink-4);display:inline-block;transition:background .2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-col a:hover::before{background:var(--steel)}
+
+  .foot-bottom{
+    margin-top:64px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);
+  }
+  .foot-bottom .stamp{display:inline-flex;align-items:center;gap:8px}
+  .foot-bottom .stamp .sq{background:var(--steel)}
+
+  /* ---------- 入场 ---------- */
+  .reveal{opacity:0;transform:translateY(16px);animation:reveal .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes reveal{to{opacity:1;transform:none}}
+  .d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.27s}.d4{animation-delay:.38s}.d5{animation-delay:.49s}.d6{animation-delay:.6s}
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width:980px){
+    .hero-matrix{display:none}
+    .sec-head{grid-template-columns:1fr;gap:18px}
+    .sec-head .right{justify-self:start}
+    .principles{grid-template-columns:1fr}
+    .principle{border-right:none;border-bottom:1px solid var(--line)}
+    .principle:last-child{border-bottom:none}
+    .tokens{grid-template-columns:repeat(2,1fr)}
+    .buttons{grid-template-columns:1fr}
+    .btn-col + .btn-col{border-left:none;border-top:1px solid var(--line)}
+    .cards{grid-template-columns:1fr 1fr}
+    .foot-top{grid-template-columns:1fr 1fr;gap:32px}
+    nav ul{gap:22px}
+  }
+  @media (max-width:620px){
+    .wrap{padding:0 22px}
+    .hero{padding:64px 0 48px}
+    .sec{padding:72px 0}
+    .tokens{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    .type-spec{grid-template-columns:1fr}
+    .type-row{grid-template-columns:90px 1fr}
+    .type-row .meta{display:none}
+    .foot-top{grid-template-columns:1fr}
+    nav ul{gap:16px}
+    nav a .num{display:none}
+    .hero-meta .right{display:none}
+    .btn-col .row{flex-direction:column;align-items:flex-start;gap:10px}
+    .btn-col .row .lbl{width:auto}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 顶栏 ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="name">净白</span>
+      <span class="en">NET · BAI</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#principles"><span class="num">01</span>原则</a></li>
+        <li><a href="#type"><span class="num">02</span>字体</a></li>
+        <li><a href="#tokens"><span class="num">03</span>色彩</a></li>
+        <li><a href="#components"><span class="num">04</span>组件</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 主视觉 ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-meta reveal d1">
+      <span class="label steel">第 〇〇一 卷 · 风格参考</span>
+      <div class="right">
+        <b>v 1.0 · 二〇二六</b><br/>
+        8PX GRID · #FFFFFF
+      </div>
+    </div>
+
+    <div class="hero-title">
+      <span class="pre reveal d2"><span class="sq steel"></span>一页给前端作参照的素净白</span>
+      <h1 class="reveal d3">
+        以<em>静</em>为骨,<br/>
+        以<span class="steel">方</span>为言。
+      </h1>
+      <span class="en reveal d4">QUIET  WHITE ·  PIXELS  AS  PUNCTUATION</span>
+      <p class="hero-sub reveal d5">
+        这是一份风格参考页。<em>冷静的纯白</em>为底,以小方形像素作标点——
+        不喧哗,不绘形,只在一旁安静地呼吸。衬线承文气,
+        像素守节律;二者各守其位,页便净了。
+      </p>
+      <div class="hero-actions reveal d6">
+        <a href="#principles" class="btn primary">阅设计原则 <span class="arr"></span></a>
+        <a href="#components" class="btn">查看组件</a>
+      </div>
+    </div>
+
+    <!-- 右下角像素矩阵装饰 -->
+    <div class="hero-matrix" aria-hidden="true">
+      <i></i><i></i><i class="soft"></i><i></i><i></i><i></i><i class="ink"></i><i></i>
+      <i></i><i class="soft"></i><i></i><i></i><i class="steel"></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i class="ink"></i><i></i><i></i><i></i><i class="soft"></i>
+      <i class="ink"></i><i></i><i></i><i></i><i></i><i class="soft"></i><i></i><i></i>
+      <i></i><i></i><i class="steel"></i><i></i><i></i><i></i><i class="ink"></i><i></i>
+      <i></i><i></i><i></i><i class="soft"></i><i></i><i class="ink"></i><i></i><i></i>
+    </div>
+
+    <div class="scrollcue reveal d6">
+      <span>SCROLL</span>
+      <span class="track"><i></i><i></i><i></i></span>
+      <span>向下</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 原则 ============ -->
+<section class="sec" id="principles">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="num">§ 01 — PRINCIPLES</div>
+        <h2 style="margin-top:18px">三条<em>守则</em></h2>
+      </div>
+      <div class="right">
+        风格的骨,藏在三句话里。
+        <span class="mono">RESTRAINT · LAYER · RHYTHM</span>
+      </div>
+    </div>
+
+    <div class="principles">
+      <div class="principle reveal d1">
+        <span class="num">P · 01</span>
+        <h3>守静<em>ON RESTRAINT</em></h3>
+        <p>底色取纯白,文字取中性灰。一切浓墨重彩让位于呼吸——克制是这份风格的第一性。</p>
+        <div class="pix-rule"><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="principle reveal d2">
+        <span class="num">P · 02</span>
+        <h3>分层<em>ON LAYER</em></h3>
+        <p>结构不靠颜色,靠白的层次与发丝线。一寸线,一档浅,自见浮沉——层次是这页的骨架。</p>
+        <div class="pix-rule"><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="principle reveal d3">
+        <span class="num">P · 03</span>
+        <h3>守节<em>ON RHYTHM</em></h3>
+        <p>像素只作标点,不作画。它出现在标签前、编号里、分隔线上,像逗号一样守节律。</p>
+        <div class="pix-rule"><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 字体 ============ -->
+<section class="sec" id="type">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="num">§ 02 — TYPOGRAPHY</div>
+        <h2 style="margin-top:18px">字之<em>六阶</em></h2>
+      </div>
+      <div class="right">
+        衬线承文气,像素字守节拍。
+        <span class="mono">FRAUNCES · NOTO SERIF SC · SILKSCREEN</span>
+      </div>
+    </div>
+
+    <div class="type-spec reveal d1">
+      <div class="type-row">
+        <div class="k">Display</div>
+        <div class="v"><div class="spec-display">Quiet White.</div></div>
+        <div class="meta">48 / 300<i class="sq steel" style="margin-left:6px"></i></div>
+      </div>
+      <div class="type-row">
+        <div class="k">Headline</div>
+        <div class="v"><div class="spec-h">以静为骨</div></div>
+        <div class="meta">30 / 400</div>
+      </div>
+      <div class="type-row">
+        <div class="k">中文标题</div>
+        <div class="v"><div class="spec-cn">净白之页</div></div>
+        <div class="meta">22 / 400</div>
+      </div>
+      <div class="type-row">
+        <div class="k">Body</div>
+        <div class="v"><div class="spec-body">A refined serif body sets the calm tone of the page.</div></div>
+        <div class="meta">16 / 400</div>
+      </div>
+      <div class="type-row">
+        <div class="k">Label</div>
+        <div class="v"><div class="spec-pix">SECTION · 01</div></div>
+        <div class="meta">14 / 400<i class="sq steel" style="margin-left:6px"></i></div>
+      </div>
+      <div class="type-row">
+        <div class="k">Mono</div>
+        <div class="v"><div class="spec-mono">--ink: #0A0A0A;</div></div>
+        <div class="meta">14 / 400</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 色彩 ============ -->
+<section class="sec" id="tokens">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="num">§ 03 — COLOR TOKENS</div>
+        <h2 style="margin-top:18px">白墨<span class="steel">钢</span></h2>
+      </div>
+      <div class="right">
+        三阶白,三阶墨,一抹冷钢青。
+        <span class="mono">NO RED · COOL ACCENT ONLY</span>
+      </div>
+    </div>
+
+    <div class="tokens">
+      <div class="token reveal d1">
+        <div class="swatch" style="background:#FFFFFF">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+        </div>
+        <div class="info">
+          <div class="name">Pure White</div>
+          <span class="role">主底 · GROUND</span>
+          <div class="hex">#FFFFFF</div>
+        </div>
+      </div>
+      <div class="token reveal d2">
+        <div class="swatch" style="background:#FAFAFB"></div>
+        <div class="info">
+          <div class="name">Surface</div>
+          <span class="role">卡片 · SURFACE</span>
+          <div class="hex">#FAFAFB</div>
+        </div>
+      </div>
+      <div class="token reveal d3">
+        <div class="swatch" style="background:#F4F5F7"></div>
+        <div class="info">
+          <div class="name">Recess</div>
+          <span class="role">凹陷 · RECESS</span>
+          <div class="hex">#F4F5F7</div>
+        </div>
+      </div>
+      <div class="token reveal d4">
+        <div class="swatch" style="background:#E5E7EB"></div>
+        <div class="info">
+          <div class="name">Line</div>
+          <span class="role">发丝 · LINE</span>
+          <div class="hex">#E5E7EB</div>
+        </div>
+      </div>
+      <div class="token reveal d1">
+        <div class="swatch" style="background:#0A0A0A">
+          <span class="corner tl" style="--c:#fff"></span>
+        </div>
+        <div class="info">
+          <div class="name">Ink</div>
+          <span class="role">主墨 · INK</span>
+          <div class="hex">#0A0A0A</div>
+        </div>
+      </div>
+      <div class="token reveal d2">
+        <div class="swatch" style="background:#374151"></div>
+        <div class="info">
+          <div class="name">Ink-2</div>
+          <span class="role">次墨 · INK-2</span>
+          <div class="hex">#374151</div>
+        </div>
+      </div>
+      <div class="token reveal d3">
+        <div class="swatch" style="background:#6B7280"></div>
+        <div class="info">
+          <div class="name">Ink-3</div>
+          <span class="role">灰墨 · INK-3</span>
+          <div class="hex">#6B7280</div>
+        </div>
+      </div>
+      <div class="token reveal d4">
+        <div class="swatch" style="background:#475569">
+          <span class="corner tl"></span><span class="corner br"></span>
+        </div>
+        <div class="info">
+          <div class="name">Steel</div>
+          <span class="role">冷钢青 · ACCENT</span>
+          <div class="hex">#475569</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 组件 ============ -->
+<section class="sec" id="components">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="num">§ 04 — COMPONENTS</div>
+        <h2 style="margin-top:18px">按钮与<em>卡片</em></h2>
+      </div>
+      <div class="right">
+        组件示例:皆为冷色,无红。
+        <span class="mono">INK · STEEL · GHOST</span>
+      </div>
+    </div>
+
+    <div class="buttons reveal d1">
+      <div class="btn-col">
+        <h3>按钮系统</h3>
+        <span class="sub">BUTTONS</span>
+        <div class="row">
+          <span class="lbl">Primary</span>
+          <button class="btn-mini primary">主按钮</button>
+        </div>
+        <div class="row">
+          <span class="lbl">Secondary</span>
+          <button class="btn-mini">次按钮</button>
+        </div>
+        <div class="row">
+          <span class="lbl">Steel</span>
+          <button class="btn-mini steel">钢青按钮</button>
+        </div>
+        <div class="row">
+          <span class="lbl">Disabled</span>
+          <button class="btn-mini disabled" disabled>禁用</button>
+        </div>
+      </div>
+      <div class="btn-col">
+        <h3>用法说明</h3>
+        <span class="sub">USAGE</span>
+        <div class="row">
+          <span class="lbl">Hover</span>
+          <button class="btn-mini primary">悬停浮起 + 阴影</button>
+        </div>
+        <div class="row">
+          <span class="lbl">前置方块</span>
+          <button class="btn-mini">每按钮前一颗方点</button>
+        </div>
+        <div class="row">
+          <span class="lbl">不变色</span>
+          <button class="btn-mini steel">仅浮起,无反相填充</button>
+        </div>
+        <div class="row">
+          <span class="lbl">字</span>
+          <button class="btn-mini">Fraunces 衬线</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 卡片示例 ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="num">§ 05 — CARDS</div>
+        <h2 style="margin-top:18px">卡片<em>三帧</em></h2>
+      </div>
+      <div class="right">
+        浮起白卡 + 发丝线 + 钢青落款。
+        <span class="mono">HOVER · LIFT · SHADOW</span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal d1">
+        <div class="top">
+          <span class="no">C · 01</span>
+          <span class="date">2026.03.04</span>
+        </div>
+        <h3>净白之底<em>ON GROUND</em></h3>
+        <p>底色取纯白 #FFFFFF,而非暖米。纯白冷净,与中性灰文字相得益彰,是这份气质的起点。</p>
+        <div class="foot">
+          <span class="tag">COLOR</span>
+          <a href="#" class="more">展开</a>
+        </div>
+      </article>
+
+      <article class="card reveal d2">
+        <div class="top">
+          <span class="no">C · 02</span>
+          <span class="date">2026.03.11</span>
+        </div>
+        <h3>发丝之线<em>ON LINE</em></h3>
+        <p>不靠粗边框,只靠 1px 发丝线勾出结构。线越细,气质越冷静——这是瑞士设计的家法。</p>
+        <div class="foot">
+          <span class="tag">STRUCTURE</span>
+          <a href="#" class="more">展开</a>
+        </div>
+      </article>
+
+      <article class="card reveal d3">
+        <div class="top">
+          <span class="no">C · 03</span>
+          <span class="date">2026.03.18</span>
+        </div>
+        <h3>钢青之印<em>ON ACCENT</em></h3>
+        <p>全页只一处点缀色:钢灰青 #475569。冷而不冰,稳而不沉,落在小编号与小方块上,像一方冷印。</p>
+        <div class="foot">
+          <span class="tag">ACCENT</span>
+          <a href="#" class="more">展开</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 引言 ============ -->
+<section class="quote">
+  <div class="wrap">
+    <div class="inner">
+      <span class="qmark">"</span>
+      <blockquote>白是未着墨的纸,像素是落在边上的逗号。</blockquote>
+      <cite>— 净白小记 · 卷一</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="big">
+        落 一 印<span class="sq steel"></span><br/>
+        <em>net</em> bai.
+        <small>愿此页,给前端作一方参照。</small>
+      </div>
+      <div class="foot-col">
+        <h4>索引</h4>
+        <ul>
+          <li><a href="#principles">三条守则</a></li>
+          <li><a href="#type">字之六阶</a></li>
+          <li><a href="#tokens">色彩 token</a></li>
+          <li><a href="#components">按钮组件</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>联络</h4>
+        <ul>
+          <li><a href="mailto:hi@netbai.studio">来信致净白</a></li>
+          <li><a href="#">订阅更新</a></li>
+          <li><a href="#">归档卷宗</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 二〇二六 · 净白 NET BAI — 风格参考</span>
+      <span class="stamp"><span class="sq steel"></span> CRAFTED ON AN 8PX GRID</span>
+      <span>NO RED · COOL ONLY</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -85,84 +85,86 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 <style scoped>
 #userRegisterPage {
-  background: #1a1a2e;
-  max-width: 720px;
-  padding: 24px;
-  margin: 24px auto;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: var(--bg);
+  max-width: 480px;
+  padding: 48px 40px;
+  margin: 80px auto;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: 0 20px 50px -24px rgba(10, 10, 10, 0.18);
 }
 
 .title {
+  position: relative;
   text-align: center;
   margin-bottom: 16px;
-  color: #e0e0e0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 32px;
+  color: var(--ink);
+}
+
+.title::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 10px;
+  background: var(--steel);
+  vertical-align: middle;
 }
 
 .desc {
   text-align: center;
-  color: #6a6a8a;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  color: var(--ink-3);
 }
 
 .tips {
   margin-bottom: 16px;
-  color: #6a6a8a;
-  font-size: 13px;
+  color: var(--ink-3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   text-align: right;
 }
 
-:deep(.tips a) {
-  color: #D4AF37;
+.tips a {
+  color: var(--steel);
+  transition: color 0.2s ease;
 }
 
-:deep(.tips a:hover) {
-  color: #E5C158;
+.tips a:hover {
+  color: var(--steel-d);
 }
 
-/* 输入框深灰色背景、浅灰色文字 */
-:deep(.ant-input) {
-  background: #2a2a4a !important;
-  color: #c0c0c0 !important;
-  border-color: #3a3a5a !important;
-}
-
-:deep(.ant-input::placeholder) {
-  color: #888 !important;
-}
-
-/* 密码输入框深灰色背景 */
-:deep(.ant-input-password) {
-  background: #2a2a4a !important;
-  border-color: #3a3a5a !important;
-}
-
-:deep(.ant-input-password input) {
-  background: #2a2a4a !important;
-  color: #c0c0c0 !important;
-}
-
-:deep(.ant-input-password-icon) {
-  color: #888 !important;
+/* 输入框：白底由全局 Antd 覆盖提供，此处仅保留聚焦钢青 */
+:deep(.ant-input:focus),
+:deep(.ant-input-focused,
+.ant-input-affix-wrapper-focused) {
+  border-color: var(--steel) !important;
+  box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.18) !important;
 }
 
 /* ===== 移动端 ===== */
 @media (max-width: 768px) {
   #userRegisterPage {
     max-width: 100%;
-    margin: 12px;
-    padding: 20px 16px;
-    border-radius: 12px;
+    margin: 16px;
+    padding: 28px 20px;
   }
 
   .title {
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 12px;
   }
 
   .desc {
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 }
 </style>

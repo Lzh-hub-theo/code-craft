@@ -44,3 +44,6 @@ application-prod.yml
 .agents/
 skills-lock.json
 review/
+
+# DS_Store
+.DS_Store

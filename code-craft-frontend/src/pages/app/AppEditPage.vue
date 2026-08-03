@@ -276,7 +276,7 @@ onMounted(() => {
 
 <style scoped>
 #appEditPage {
-  padding: 24px;
+  padding: 36px;
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -290,8 +290,23 @@ onMounted(() => {
 
 .page-header h1 {
   margin: 0;
-  font-size: 24px;
-  font-weight: 600;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--ink);
+  position: relative;
+  padding-left: 14px;
+}
+
+.page-header h1::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--steel);
 }
 
 .edit-container {
@@ -301,23 +316,20 @@ onMounted(() => {
 .cover-preview {
   margin-top: 12px;
   padding: 12px;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
 }
 
 .form-tip {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #999;
+  color: var(--ink-4);
   margin-top: 4px;
 }
 
-:deep(.ant-card-head) {
-  background: #fafafa;
-}
-
 :deep(.ant-descriptions-item-label) {
-  background: #fafafa;
+  background: var(--surface);
   font-weight: 500;
 }
 

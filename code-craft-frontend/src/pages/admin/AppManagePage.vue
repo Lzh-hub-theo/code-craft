@@ -265,22 +265,23 @@ const deleteApp = async (id: number | undefined) => {
 
 <style scoped>
 #appManagePage {
-  padding: 24px;
-  background: #1a1a2e;
-  margin-top: 16px;
-  min-height: 100vh;
+  padding: 36px;
+  background: transparent;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  min-height: auto;
 }
 
 .no-cover {
   width: 80px;
   height: 60px;
-  background: #2a2a4a;
+  background: var(--recess);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #a0a0a0;
+  color: var(--ink-3);
   font-size: 12px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .prompt-text {
@@ -288,11 +289,11 @@ const deleteApp = async (id: number | undefined) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #e0e0e0;
+  color: var(--ink-3);
 }
 
 .text-gray {
-  color: #a0a0a0;
+  color: var(--ink-3);
 }
 
 /* 编辑按钮不加粗 */
@@ -300,127 +301,28 @@ const deleteApp = async (id: number | undefined) => {
   font-weight: normal !important;
 }
 
-/* 精选按钮 - 金色边框透明背景（精选和取消精选风格一致） */
+/* 精选按钮 - 钢青描边透明背景（精选和取消精选风格一致） */
 .toggle-featured-btn {
   background: transparent;
-  border-color: #faad14;
-  color: #faad14;
+  border-color: var(--steel);
+  color: var(--steel);
   font-weight: normal !important;
 }
 
 .toggle-featured-btn:hover {
-  background: rgba(250, 173, 20, 0.1);
-  border-color: #d48806;
-  color: #d48806;
+  background: rgba(71, 85, 105, 0.08);
+  border-color: var(--steel-d);
+  color: var(--steel-d);
 }
 
 :deep(.ant-table-tbody > tr > td) {
   vertical-align: middle;
 }
 
-:deep(.ant-table) {
-  background: #16213e;
-  color: #e0e0e0;
-}
-
-:deep(.ant-table-thead > tr > th) {
-  background: #2a2a4a;
-  color: #e0e0e0;
-  border-bottom: 1px solid #3a3a5a;
-}
-
-:deep(.ant-table-tbody > tr) {
-  transition: background 0.2s;
-  background: #16213e;
-}
-
-:deep(.ant-table-tbody > tr > td) {
-  background: #16213e !important;
-  border-bottom: 1px solid #2a2a4a;
-  border-right: 1px solid #2a2a4a !important;
-  color: #e0e0e0;
-  transition: background 0.2s;
-}
-
-:deep(.ant-table-tbody > tr:hover > td) {
-  background: #2a2a4a !important;
-}
-
-:deep(.ant-table-cell) {
-  border-color: #2a2a4a !important;
-}
-
-:deep(.ant-form-item-label > label) {
-  color: #e0e0e0;
-}
-
-:deep(.ant-input),
-:deep(.ant-select-selector) {
-  background: #2a2a4a !important;
-  color: #e0e0e0 !important;
-  border-color: #3a3a5a !important;
-}
-
-:deep(.ant-input::placeholder) {
-  color: #888 !important;
-}
-
-:deep(.ant-select-selection-placeholder) {
-  color: #888 !important;
-}
-
-:deep(.ant-pagination) {
-  color: #c0c0c0;
-}
-
-:deep(.ant-pagination-item) {
-  background: #16213e;
-  border-color: #2a2a4a;
-}
-
-:deep(.ant-pagination-item a) {
-  color: #c0c0c0;
-}
-
-:deep(.ant-pagination-item-active) {
-  background: #2a2a4a;
-  border-color: #D4AF37;
-}
-
-:deep(.ant-pagination-item-active a) {
-  color: #D4AF37;
-}
-
-:deep(.ant-pagination-item-active:hover) {
-  border-color: #D4AF37 !important;
-}
-
-:deep(.ant-pagination-item-active:hover a) {
-  color: #D4AF37 !important;
-}
-
-:deep(.ant-divider) {
-  border-color: #2a2a4a;
-}
-
-/* 删除按钮浅红背景 */
-:deep(.ant-btn-dangerous) {
-  background: #ff4d4f;
-  border-color: #ff4d4f;
-  color: white;
-}
-
-:deep(.ant-btn-dangerous:hover) {
-  background: #ff7875 !important;
-  border-color: #ff7875 !important;
-  color: white !important;
-}
-
 /* ===== 移动端 ===== */
 @media (max-width: 768px) {
   #appManagePage {
     padding: 12px;
-    margin-top: 8px;
   }
 
   /* 搜索表单堆叠为纵向 */

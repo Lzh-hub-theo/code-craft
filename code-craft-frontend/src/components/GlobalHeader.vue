@@ -174,11 +174,16 @@ const doLogout = async () => {
 
 <style scoped>
 .header {
-  background: #16213e;
-  padding: 0 24px;
-  border-bottom: 1px solid #2a2a4a;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0 36px;
+  border-bottom: 1px solid var(--line-soft);
   height: 64px;
   line-height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .header-inner {
@@ -186,6 +191,8 @@ const doLogout = async () => {
   align-items: center;
   height: 100%;
   gap: 16px;
+  max-width: var(--maxw);
+  margin: 0 auto;
 }
 
 .header-left {
@@ -196,14 +203,23 @@ const doLogout = async () => {
 }
 
 .logo {
-  height: 40px;
-  width: 40px;
+  height: 28px;
+  width: 28px;
+  /* 像素方框标记：内嵌实心方块 */
+  border: 1px solid var(--ink);
+  padding: 4px;
+  object-fit: contain;
+  background: var(--bg);
 }
 
 .site-title {
   margin: 0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 500;
   font-size: 18px;
-  color: #D4AF37;
+  letter-spacing: -0.01em;
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -222,55 +238,58 @@ const doLogout = async () => {
 /* 汉堡按钮仅移动端显示 */
 .header-menu-toggle {
   display: none;
-  color: #e0e0e0;
+  color: var(--ink);
   font-size: 20px;
   align-items: center;
   justify-content: center;
 }
 
 .user-login-status {
-  color: #fff;
+  color: var(--ink-2);
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
 }
 
 .user-login-status .ant-avatar {
   margin-right: 4px;
 }
 
-/* 菜单栏黑底白字 */
+/* 菜单栏：透明白底、墨色字 */
 :deep(.ant-menu) {
-  background: #16213e;
-  color: #e0e0e0;
+  background: transparent;
+  color: var(--ink-2);
 }
 
 :deep(.ant-menu-horizontal) {
   border-bottom: none !important;
-  background: #16213e;
+  background: transparent;
   line-height: 62px;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
 }
 
 :deep(.ant-menu-item),
 :deep(.ant-menu-submenu) {
-  color: #e0e0e0 !important;
+  color: var(--ink-2) !important;
+  transition: color 0.2s;
 }
 
 :deep(.ant-menu-item:hover),
 :deep(.ant-menu-submenu:hover) {
-  background: #2a2a4a !important;
-  color: #fff !important;
+  background: transparent !important;
+  color: var(--ink) !important;
 }
 
 :deep(.ant-menu-item:hover::after),
 :deep(.ant-menu-submenu:hover::after) {
-  border-bottom-color: #D4AF37 !important;
+  border-bottom-color: var(--steel) !important;
 }
 
 :deep(.ant-menu-item-selected) {
-  background: #2a2a4a !important;
-  color: #D4AF37 !important;
+  background: transparent !important;
+  color: var(--ink) !important;
 }
 
 :deep(.ant-menu-item-selected::after) {
-  border-bottom-color: #D4AF37 !important;
+  border-bottom-color: var(--ink) !important;
 }
 
 /* 抽屉内菜单样式 */
@@ -282,22 +301,23 @@ const doLogout = async () => {
 .mobile-user-area {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #2a2a4a;
+  border-top: 1px solid var(--line);
 }
 
 .mobile-user-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #e0e0e0;
+  color: var(--ink-2);
   margin-bottom: 12px;
   padding: 4px 0;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
 }
 
 /* ===== 移动端 ===== */
 @media (max-width: 768px) {
   .header {
-    padding: 0 12px;
+    padding: 0 16px;
     height: 56px;
     line-height: 56px;
   }
@@ -307,8 +327,9 @@ const doLogout = async () => {
   }
 
   .logo {
-    height: 32px;
-    width: 32px;
+    height: 24px;
+    width: 24px;
+    padding: 3px;
   }
 
   .site-title {

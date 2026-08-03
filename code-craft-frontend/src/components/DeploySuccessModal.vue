@@ -75,15 +75,22 @@ const handleClose = () => {
   margin-bottom: 16px;
 }
 
+/* 模板内图标为行内 style，用 !important 覆盖为钢青色 */
+.success-icon :deep(.anticon) {
+  color: var(--steel) !important;
+}
+
 .deploy-success h3 {
   margin: 0 0 16px;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 20px;
   font-weight: 600;
+  color: var(--ink);
 }
 
 .deploy-success p {
   margin: 0 0 24px;
-  color: #666;
+  color: var(--ink-3);
 }
 
 .deploy-url {
@@ -117,7 +124,7 @@ const handleClose = () => {
     gap: 8px;
   }
 
-  .deploy-actions .ant-btn {
+  .deploy-actions :deep(.ant-btn) {
     width: 100%;
   }
 }

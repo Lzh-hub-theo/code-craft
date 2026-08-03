@@ -21,22 +21,29 @@
 
 <style scoped>
 .footer {
-  background: rgba(22, 33, 62, 0.95);
+  background: transparent;
   backdrop-filter: blur(10px);
   text-align: center;
-  padding: 20px;
+  padding: 20px 36px;
   margin-top: 40px;
-  border-top: 1px solid #2a2a4a;
+  border-top: 1px solid var(--line-soft);
 }
 
 .copyright {
   margin: 0;
-  color: #a0a0a0;
-  font-size: 14px;
+  color: var(--ink-3);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
 }
 
 .author-link {
-  color: #D4AF37;
+  color: var(--steel);
+  transition: color 0.2s;
+}
+
+.author-link:hover {
+  color: var(--steel-d);
 }
 
 /* ===== 移动端 ===== */
@@ -47,7 +54,7 @@
   }
 
   .copyright {
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.5;
   }
 }
